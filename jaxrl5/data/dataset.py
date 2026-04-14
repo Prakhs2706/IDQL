@@ -3,7 +3,6 @@ from random import sample
 from typing import Dict, Iterable, Optional, Tuple, Union
 
 import jax
-import jax.numpy as jnp
 import numpy as np
 from flax.core import frozen_dict
 from gym.utils import seeding
@@ -104,29 +103,19 @@ class Dataset(object):
         return frozen_dict.freeze(batch)
 
     def sample_jax(self, batch_size: int, keys: Optional[Iterable[str]] = None):
-        if not hasattr(self, "rng"):
-            self.rng = jax.random.PRNGKey(self._seed or 42)
+        """Random minibatch as JAX arrays on the default device.
 
-            if keys is None:
-                keys = self.dataset_dict.keys()
-
-            jax_dataset_dict = {k: self.dataset_dict[k] for k in keys}
-            jax_dataset_dict = jax.device_put(jax_dataset_dict)
-
-            @jax.jit
-            def _sample_jax(rng):
-                key, rng = jax.random.split(rng)
-                indx = jax.random.randint(
-                    key, (batch_size,), minval=0, maxval=len(self)
-                )
-                return rng, jax.tree_map(
-                    lambda d: jnp.take(d, indx, axis=0), jax_dataset_dict
-                )
-
-            self._sample_jax = _sample_jax
-
-        self.rng, sample = self._sample_jax(self.rng)
-        return sample
+        Uses NumPy indexing on the host then ``jax.device_put`` for only the
+        batch. The previous implementation JIT-tied the *entire* dataset (e.g.
+        ~1.1GB for 900k x 302 float observations), which XLA treated as a giant
+        constant and often OOM'd the GPU before training even started.
+        """
+        batch = self.sample(batch_size, keys=keys)
+        if hasattr(batch, "unfreeze"):
+            batch = batch.unfreeze()
+        else:
+            batch = dict(batch)
+        return jax.device_put(batch)
 
     def split(self, ratio: float) -> Tuple["Dataset", "Dataset"]:
         assert 0 < ratio and ratio < 1

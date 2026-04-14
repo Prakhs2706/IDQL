@@ -1,0 +1,23 @@
+{"time":"2026-04-13T19:27:00.379756569+05:30","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2026-04-13T19:27:00.931043187+05:30","level":"INFO","msg":"stream: created new stream","id":"najp0p4p"}
+{"time":"2026-04-13T19:27:00.931278784+05:30","level":"INFO","msg":"handler: started","stream_id":"najp0p4p"}
+{"time":"2026-04-13T19:27:00.942667655+05:30","level":"INFO","msg":"stream: started","id":"najp0p4p"}
+{"time":"2026-04-13T19:27:00.942719154+05:30","level":"INFO","msg":"writer: started","stream_id":"najp0p4p"}
+{"time":"2026-04-13T19:27:00.942753553+05:30","level":"INFO","msg":"sender: started","stream_id":"najp0p4p"}
+{"time":"2026-04-13T20:09:32.727472938+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:09:35.148167968+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:09:39.41752337+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:09:47.469123152+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:10:05.270664727+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:10:40.156248284+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:11:40.15898563+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:12:40.194804633+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:13:40.196979159+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:14:40.199672202+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:15:40.20238775+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:16:40.20504378+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/BTP2/idql_waymo/najp0p4p/file_stream\": Moved Temporarily"}
+{"time":"2026-04-13T20:21:38.542030524+05:30","level":"INFO","msg":"stream: closing","id":"najp0p4p"}
+{"time":"2026-04-13T20:21:39.716261772+05:30","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-04-13T20:21:40.735224072+05:30","level":"INFO","msg":"handler: closed","stream_id":"najp0p4p"}
+{"time":"2026-04-13T20:21:40.735910333+05:30","level":"INFO","msg":"sender: closed","stream_id":"najp0p4p"}
+{"time":"2026-04-13T20:21:40.735937222+05:30","level":"INFO","msg":"stream: closed","id":"najp0p4p"}

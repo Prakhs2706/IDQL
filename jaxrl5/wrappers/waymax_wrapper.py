@@ -1,5 +1,5 @@
 """
-Gym-compatible wrapper around Waymax MultiAgentEnvironment.
+Gym-compatible wrapper around Waymax BaseEnvironment.
 
 Uses the same observation/action format as the expert data extraction
 pipeline and WaymoOfflineRL evaluation, presenting a standard gym.Env
@@ -8,6 +8,10 @@ interface for the jaxrl5 evaluation loop.
 Action: 2-D continuous [acceleration, steering] clipped to
         [-10, 8] m/s^2 and [-0.8, 0.8] rad.
 Obs:    flat 302-D vector from waymax_obs_utils.
+
+Route-based Waymax metrics (sdc_progression, sdc_off_route, sdc_wrongway) are
+omitted here because Scenario-to-state conversion sets sdc_paths=None; we run
+log_divergence, overlap, offroad, and kinematic_infeasibility only.
 """
 
 import sys
@@ -22,11 +26,13 @@ from gym import spaces
 from waymax import config as wmx_config
 from waymax import datatypes
 from waymax import dynamics
-from waymax import env as wmx_env
+from waymax.env.base_environment import BaseEnvironment
 
 from jaxrl5.wrappers.waymax_obs_utils import (
     state_to_feature_dict, flatten_state_dict, OBS_DIM,
 )
+from jaxrl5.wrappers.waymax_reward import compute_reward
+from jaxrl5.wrappers.waymax_worl_kpis import compute_worl_episode_kpis
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'launcher', 'examples'))
 from scenario_to_waymax import scenario_generator
@@ -35,9 +41,31 @@ MAX_ACCELERATION = 8.0
 MIN_ACCELERATION = -10.0
 MAX_STEERING_ANGLE = 0.8
 
+# Waymax built-ins that do not require SimulatorState.sdc_paths
+WAYMAX_METRICS_TO_RUN = (
+    'log_divergence',
+    'overlap',
+    'offroad',
+    'kinematic_infeasibility',
+)
+
+
+def _metric_result_to_float(mr, sdc_idx: int) -> float:
+    """Reduce a MetricResult to a scalar for the SDC (or global scalar)."""
+    val = jnp.asarray(mr.value)
+    valid = jnp.asarray(mr.valid)
+    if val.ndim == 0:
+        out = jnp.where(valid, val, jnp.nan)
+        return float(jax.device_get(out))
+    n = int(val.shape[0])
+    if sdc_idx < 0 or sdc_idx >= n:
+        return float('nan')
+    out = jnp.where(valid[sdc_idx], val[sdc_idx], jnp.nan)
+    return float(jax.device_get(out))
+
 
 class WaymaxGymWrapper(gym.Env):
-    """Wraps Waymax MultiAgentEnvironment for IDQL evaluation."""
+    """Wraps Waymax BaseEnvironment for IDQL evaluation."""
 
     def __init__(
         self,
@@ -98,10 +126,10 @@ class WaymaxGymWrapper(gym.Env):
         env_config = wmx_config.EnvironmentConfig(
             max_num_objects=raw_state.num_objects,
             controlled_object=wmx_config.ObjectType.SDC,
-            metrics=wmx_config.MetricsConfig(),
+            metrics=wmx_config.MetricsConfig(metrics_to_run=WAYMAX_METRICS_TO_RUN),
             rewards=wmx_config.LinearCombinationRewardConfig(rewards={}),
         )
-        self._env = wmx_env.MultiAgentEnvironment(
+        self._env = BaseEnvironment(
             dynamics_model=self._dynamics_model,
             config=env_config,
         )
@@ -119,6 +147,17 @@ class WaymaxGymWrapper(gym.Env):
             )
         )
         return obs.astype(np.float32)
+
+    def collect_episode_eval_stats(self) -> dict:
+        """Call at end of an episode on the terminal SimulatorState (before reset)."""
+        sdc_idx = int(jnp.argmax(self._state.object_metadata.is_sdc))
+        stats = {}
+        if self._env is not None:
+            raw_metrics = self._env.metrics(self._state)
+            for name, mr in raw_metrics.items():
+                stats[f'waymax_{name}'] = _metric_result_to_float(mr, sdc_idx)
+        stats.update(compute_worl_episode_kpis(self._state, sdc_idx))
+        return stats
 
     def step(self, action):
         action = np.asarray(action, dtype=np.float32).reshape(2)
@@ -138,19 +177,18 @@ class WaymaxGymWrapper(gym.Env):
         self._step_count += 1
 
         ts = int(np.asarray(self._state.timestep))
-        obs = flatten_state_dict(
-            state_to_feature_dict(
-                self._state, ts, self._map_data, self._tl_lookup,
-                use_sim_trajectory=True,
-            )
+        sd = state_to_feature_dict(
+            self._state, ts, self._map_data, self._tl_lookup,
+            use_sim_trajectory=True,
         )
+        obs = flatten_state_dict(sd)
 
         sdc_valid = bool(np.asarray(self._state.sim_trajectory.valid)[sdc_idx, ts])
         terminated = not sdc_valid
         truncated = self._step_count >= self._max_episode_steps or ts >= 90
         done = terminated or truncated
 
-        reward = 0.0
+        reward = compute_reward(sd)
         info = {
             'scenario_id': self._scenario_id,
             'timestep': ts,

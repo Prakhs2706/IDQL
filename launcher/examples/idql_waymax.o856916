@@ -1,0 +1,142 @@
+===============================
+856916.pbshpc
+scai01.hpc.iitd.ac.in
+===============================
+proxy login connected
+JAX default_backend=gpu | devices=[CudaDevice(id=0)]
+Loading dataset from /home/mech/btech/me1222006/scratch/data/waymax_expert/waymo_train_10k.npz
+Loaded dataset: 900000 transitions
+  obs shape:  (900000, 302)
+  act shape:  (900000, 2)
+  act range:  [-1.0000, 1.0000]
+  reward range: [-1.0000, 1.0000]
+Train: 855000 transitions, Val: 45000 transitions
+Creating eval env from /home/mech/btech/me1222006/scratch/data/raw/validation
+Eval env: obs=Box(-inf, inf, (302,), float32), act=Box([-10.   -0.8], [8.  0.8], (2,), float32)
+Creating DDPMIQLLearner (seed=0)
+  obs_space: Box(-inf, inf, (302,), float32)
+  act_space: Box([-10.   -0.8], [8.  0.8], (2,), float32)
+  config: {'actor_lr': 0.0003, 'critic_lr': 0.0003, 'value_lr': 0.0003, 'T': 5, 'N': 64, 'M': 0, 'actor_dropout_rate': 0.1, 'actor_num_blocks': 3, 'decay_steps': 1000000, 'actor_layer_norm': True, 'value_layer_norm': True, 'actor_tau': 0.001, 'beta_schedule': 'vp', 'critic_hyperparam': 0.9}
+
+Starting training for 1000000 steps ...
+Step 0 | actor_loss=216.5386 | critic_loss=121.5829 | value_loss=19.7593 | v=0.5056 | q=-6.0388 | 0.0 steps/s
+Step 10000 | actor_loss=0.1961 | critic_loss=1.0335 | value_loss=0.2156 | v=21.5874 | q=21.4666 | 22.8 steps/s
+Step 20000 | actor_loss=0.0357 | critic_loss=1.1481 | value_loss=0.1710 | v=29.4514 | q=29.2386 | 43.7 steps/s
+Step 30000 | actor_loss=0.0178 | critic_loss=0.9535 | value_loss=0.1488 | v=29.4680 | q=29.1811 | 63.1 steps/s
+Step 40000 | actor_loss=0.0467 | critic_loss=0.5506 | value_loss=0.0898 | v=27.6660 | q=27.7213 | 81.2 steps/s
+Step 50000 | actor_loss=0.0120 | critic_loss=0.4469 | value_loss=0.0405 | v=25.1551 | q=24.8817 | 98.0 steps/s
+Step 60000 | actor_loss=0.0097 | critic_loss=0.4138 | value_loss=0.0350 | v=23.2722 | q=22.8551 | 113.7 steps/s
+Step 70000 | actor_loss=0.0064 | critic_loss=0.5215 | value_loss=0.0484 | v=24.9164 | q=24.3538 | 128.4 steps/s
+Step 80000 | actor_loss=0.0124 | critic_loss=0.4391 | value_loss=0.0345 | v=23.3440 | q=23.4219 | 142.2 steps/s
+Step 90000 | actor_loss=0.0043 | critic_loss=0.4120 | value_loss=0.0348 | v=24.0199 | q=23.5350 | 155.2 steps/s
+Step 100000 | actor_loss=0.0069 | critic_loss=2.0045 | value_loss=0.1519 | v=24.7361 | q=25.0545 | 167.4 steps/s
+  Eval (N=64): return=-33.534±36.026 | ep_len=80.0 | profile wall=636.3s (policy 13% 67.9ms/step | env_step 4% 23.7ms/step | reset 8% | collect 74% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=10.7795 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.1333 | worl_success_rate_pct=26.67 worl_collision_rate_pct=46.67 worl_off_road_rate_pct=0.00 worl_goal_completion_rate_pct=40.00
+  Saved checkpoint to checkpoints/agent_step_100000
+Step 110000 | actor_loss=0.0031 | critic_loss=0.7578 | value_loss=0.0724 | v=27.6959 | q=27.2074 | 87.0 steps/s
+Step 120000 | actor_loss=0.0049 | critic_loss=0.8248 | value_loss=0.1016 | v=29.0776 | q=28.8252 | 93.6 steps/s
+Step 130000 | actor_loss=0.0026 | critic_loss=3.9802 | value_loss=0.1733 | v=29.9361 | q=30.5067 | 100.0 steps/s
+Step 140000 | actor_loss=0.0029 | critic_loss=2.4950 | value_loss=0.1756 | v=28.1303 | q=28.5123 | 106.2 steps/s
+Step 150000 | actor_loss=0.0067 | critic_loss=8.2917 | value_loss=0.7446 | v=33.2504 | q=31.6262 | 112.3 steps/s
+Step 160000 | actor_loss=0.0064 | critic_loss=6.0952 | value_loss=5.7946 | v=44.9781 | q=44.4058 | 118.2 steps/s
+Step 170000 | actor_loss=0.0029 | critic_loss=3.5472 | value_loss=0.8887 | v=35.2106 | q=35.1957 | 123.9 steps/s
+Step 180000 | actor_loss=0.0060 | critic_loss=7.3856 | value_loss=0.8192 | v=43.7393 | q=43.1548 | 129.5 steps/s
+Step 190000 | actor_loss=0.0040 | critic_loss=12.6504 | value_loss=1.5311 | v=44.6472 | q=44.9572 | 135.0 steps/s
+Step 200000 | actor_loss=0.0016 | critic_loss=21.2468 | value_loss=3.3689 | v=48.0808 | q=47.5009 | 140.3 steps/s
+  Eval (N=64): return=-31.288±33.624 | ep_len=80.0 | profile wall=76.2s (policy 5% 3.2ms/step | env_step 25% 15.9ms/step | reset 60% | collect 10% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=4.6443 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.2000 | worl_success_rate_pct=33.33 worl_collision_rate_pct=26.67 worl_off_road_rate_pct=0.00 worl_goal_completion_rate_pct=46.67
+  Saved checkpoint to checkpoints/agent_step_200000
+Step 210000 | actor_loss=0.0031 | critic_loss=26.8460 | value_loss=2.4315 | v=52.0202 | q=49.0014 | 138.2 steps/s
+Step 220000 | actor_loss=0.0025 | critic_loss=30.2799 | value_loss=4.2959 | v=54.6061 | q=52.9193 | 143.1 steps/s
+Step 230000 | actor_loss=0.0023 | critic_loss=54.1400 | value_loss=4.2480 | v=57.8216 | q=58.8643 | 147.9 steps/s
+Step 240000 | actor_loss=0.0014 | critic_loss=300.0477 | value_loss=4.5167 | v=83.0718 | q=83.4255 | 152.6 steps/s
+Step 250000 | actor_loss=0.0010 | critic_loss=108.9824 | value_loss=31.8343 | v=74.1405 | q=71.0707 | 157.1 steps/s
+Step 260000 | actor_loss=0.0025 | critic_loss=81.2552 | value_loss=8.2078 | v=69.1168 | q=65.2248 | 161.6 steps/s
+Step 270000 | actor_loss=0.0021 | critic_loss=74.7111 | value_loss=10.5920 | v=74.4448 | q=72.8950 | 166.0 steps/s
+Step 280000 | actor_loss=0.0036 | critic_loss=122.6067 | value_loss=23.6421 | v=80.6268 | q=78.6663 | 170.2 steps/s
+Step 290000 | actor_loss=0.0023 | critic_loss=91.2158 | value_loss=21.5465 | v=93.2746 | q=92.9212 | 174.4 steps/s
+Step 300000 | actor_loss=0.0017 | critic_loss=162.3634 | value_loss=21.3696 | v=82.5430 | q=82.9680 | 178.5 steps/s
+  Eval (N=64): return=-24.779±28.945 | ep_len=80.0 | profile wall=82.5s (policy 5% 3.1ms/step | env_step 23% 15.9ms/step | reset 64% | collect 8% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=10.0256 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.1333 | worl_success_rate_pct=40.00 worl_collision_rate_pct=33.33 worl_off_road_rate_pct=0.00 worl_goal_completion_rate_pct=46.67
+  Saved checkpoint to checkpoints/agent_step_300000
+Step 310000 | actor_loss=0.0102 | critic_loss=85.5929 | value_loss=12.2670 | v=83.7775 | q=84.3174 | 174.0 steps/s
+Step 320000 | actor_loss=0.0020 | critic_loss=136.5704 | value_loss=18.2622 | v=93.9814 | q=90.4224 | 177.9 steps/s
+Step 330000 | actor_loss=0.0019 | critic_loss=99.4651 | value_loss=11.1429 | v=87.4009 | q=89.8700 | 181.6 steps/s
+Step 340000 | actor_loss=0.0014 | critic_loss=3138.9126 | value_loss=194.5127 | v=144.2032 | q=144.1451 | 185.3 steps/s
+Step 350000 | actor_loss=0.0025 | critic_loss=184.4616 | value_loss=47.2588 | v=95.2420 | q=95.0747 | 188.9 steps/s
+Step 360000 | actor_loss=0.0027 | critic_loss=100.4737 | value_loss=31.3566 | v=95.7283 | q=94.8837 | 192.4 steps/s
+Step 370000 | actor_loss=0.0023 | critic_loss=114.4893 | value_loss=15.0307 | v=102.0821 | q=99.1273 | 195.9 steps/s
+Step 380000 | actor_loss=0.0028 | critic_loss=128.6392 | value_loss=23.7293 | v=103.0951 | q=99.0686 | 199.3 steps/s
+Step 390000 | actor_loss=0.0009 | critic_loss=1313.3774 | value_loss=205.6340 | v=131.0866 | q=129.1511 | 202.7 steps/s
+Step 400000 | actor_loss=0.0050 | critic_loss=116.5749 | value_loss=22.0807 | v=104.4787 | q=98.1009 | 206.0 steps/s
+  Eval (N=64): return=-20.088±25.600 | ep_len=80.0 | profile wall=82.9s (policy 5% 3.2ms/step | env_step 23% 16.0ms/step | reset 64% | collect 8% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=15.1662 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0000 | worl_success_rate_pct=53.33 worl_collision_rate_pct=33.33 worl_off_road_rate_pct=0.00 worl_goal_completion_rate_pct=66.67
+  Saved checkpoint to checkpoints/agent_step_400000
+Step 410000 | actor_loss=0.0051 | critic_loss=467.2729 | value_loss=34.9356 | v=160.2999 | q=153.2588 | 200.7 steps/s
+Step 420000 | actor_loss=0.0012 | critic_loss=185.5980 | value_loss=30.7795 | v=102.3432 | q=99.5988 | 203.8 steps/s
+Step 430000 | actor_loss=0.0015 | critic_loss=125.6296 | value_loss=21.4577 | v=117.1410 | q=112.6038 | 206.9 steps/s
+Step 440000 | actor_loss=0.0010 | critic_loss=173.7370 | value_loss=22.8676 | v=127.9018 | q=123.0483 | 209.9 steps/s
+Step 450000 | actor_loss=0.0027 | critic_loss=208.3566 | value_loss=67.5739 | v=132.8349 | q=131.6662 | 212.9 steps/s
+Step 460000 | actor_loss=0.0007 | critic_loss=276.6787 | value_loss=17.5666 | v=122.1104 | q=122.0853 | 215.8 steps/s
+Step 470000 | actor_loss=0.0017 | critic_loss=359.3140 | value_loss=46.7910 | v=143.4231 | q=136.6277 | 218.6 steps/s
+Step 480000 | actor_loss=0.0012 | critic_loss=528.8750 | value_loss=91.1628 | v=173.1885 | q=171.7753 | 221.5 steps/s
+Step 490000 | actor_loss=0.0015 | critic_loss=459.8068 | value_loss=84.6362 | v=158.4682 | q=159.0523 | 224.3 steps/s
+Step 500000 | actor_loss=0.0011 | critic_loss=492.4733 | value_loss=70.1141 | v=158.6487 | q=152.4913 | 227.0 steps/s
+  Eval (N=64): return=-15.444±25.768 | ep_len=80.0 | profile wall=84.1s (policy 4% 3.1ms/step | env_step 23% 15.9ms/step | reset 65% | collect 8% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=18.3513 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.1333 | worl_success_rate_pct=46.67 worl_collision_rate_pct=40.00 worl_off_road_rate_pct=0.00 worl_goal_completion_rate_pct=60.00
+  Saved checkpoint to checkpoints/agent_step_500000
+Step 510000 | actor_loss=0.0013 | critic_loss=1639.8851 | value_loss=525.5264 | v=184.8054 | q=184.0114 | 221.3 steps/s
+Step 520000 | actor_loss=0.0013 | critic_loss=275.2862 | value_loss=61.0208 | v=172.2246 | q=166.1949 | 223.9 steps/s
+Step 530000 | actor_loss=0.0017 | critic_loss=611.1569 | value_loss=135.8230 | v=194.4643 | q=191.0851 | 226.5 steps/s
+Step 540000 | actor_loss=0.0008 | critic_loss=649.7588 | value_loss=86.2998 | v=210.2965 | q=209.0732 | 229.0 steps/s
+Step 550000 | actor_loss=0.0010 | critic_loss=723.5085 | value_loss=82.0547 | v=187.7163 | q=184.2703 | 231.5 steps/s
+Step 560000 | actor_loss=0.0013 | critic_loss=854.0836 | value_loss=146.7362 | v=193.4006 | q=184.7354 | 234.0 steps/s
+Step 570000 | actor_loss=0.0007 | critic_loss=924.5179 | value_loss=116.3099 | v=201.8519 | q=200.2320 | 236.4 steps/s
+Step 580000 | actor_loss=0.0013 | critic_loss=787.1974 | value_loss=185.4438 | v=230.6033 | q=221.0480 | 238.8 steps/s
+Step 590000 | actor_loss=0.0017 | critic_loss=808.5520 | value_loss=168.4728 | v=228.0191 | q=219.4086 | 241.1 steps/s
+Step 600000 | actor_loss=0.0006 | critic_loss=838.0151 | value_loss=125.6566 | v=236.6106 | q=229.7613 | 243.5 steps/s
+  Eval (N=64): return=-12.590±23.638 | ep_len=80.0 | profile wall=84.4s (policy 5% 3.2ms/step | env_step 23% 16.0ms/step | reset 65% | collect 8% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=18.7976 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.1333 | worl_success_rate_pct=40.00 worl_collision_rate_pct=46.67 worl_off_road_rate_pct=0.00 worl_goal_completion_rate_pct=60.00
+  Saved checkpoint to checkpoints/agent_step_600000
+Step 610000 | actor_loss=0.0009 | critic_loss=529.1820 | value_loss=148.6749 | v=221.1720 | q=219.3553 | 237.7 steps/s
+Step 620000 | actor_loss=0.0004 | critic_loss=797.4635 | value_loss=198.2124 | v=235.8729 | q=222.5117 | 239.9 steps/s
+Step 630000 | actor_loss=0.0015 | critic_loss=993.4255 | value_loss=204.2718 | v=254.9762 | q=244.3246 | 242.1 steps/s
+Step 640000 | actor_loss=0.0011 | critic_loss=1593.2256 | value_loss=627.8387 | v=254.9977 | q=249.7188 | 244.3 steps/s
+Step 650000 | actor_loss=0.0030 | critic_loss=1209.1526 | value_loss=110.9514 | v=267.8878 | q=258.9085 | 246.5 steps/s
+Step 660000 | actor_loss=0.0024 | critic_loss=2357.8491 | value_loss=333.1784 | v=284.3965 | q=281.0772 | 248.6 steps/s
+Step 670000 | actor_loss=0.0010 | critic_loss=2502.6377 | value_loss=112.9063 | v=271.2253 | q=254.8966 | 250.7 steps/s
+Step 680000 | actor_loss=0.0010 | critic_loss=1032.4578 | value_loss=248.0871 | v=273.1456 | q=266.3211 | 252.7 steps/s
+Step 690000 | actor_loss=0.0005 | critic_loss=1508.2078 | value_loss=224.1971 | v=284.9629 | q=272.3211 | 254.8 steps/s
+Step 700000 | actor_loss=0.0080 | critic_loss=1670.9126 | value_loss=624.6624 | v=290.6907 | q=289.7501 | 256.8 steps/s
+  Eval (N=64): return=-7.509±19.258 | ep_len=80.0 | profile wall=85.4s (policy 4% 3.1ms/step | env_step 23% 16.5ms/step | reset 65% | collect 8% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=15.0774 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.1333 | worl_success_rate_pct=53.33 worl_collision_rate_pct=33.33 worl_off_road_rate_pct=0.00 worl_goal_completion_rate_pct=66.67
+  Saved checkpoint to checkpoints/agent_step_700000
+Step 710000 | actor_loss=0.0015 | critic_loss=1471.7910 | value_loss=173.4074 | v=286.2414 | q=281.8321 | 251.0 steps/s
+Step 720000 | actor_loss=0.0008 | critic_loss=874.2402 | value_loss=179.9362 | v=264.5212 | q=261.5280 | 252.9 steps/s
+Step 730000 | actor_loss=0.0015 | critic_loss=4202.8540 | value_loss=492.3337 | v=347.4783 | q=326.6969 | 254.8 steps/s
+Step 740000 | actor_loss=0.0005 | critic_loss=1595.9771 | value_loss=367.4743 | v=330.4365 | q=317.8387 | 256.7 steps/s
+Step 750000 | actor_loss=0.0005 | critic_loss=1540.8733 | value_loss=194.4236 | v=312.8262 | q=294.9808 | 258.6 steps/s
+Step 760000 | actor_loss=0.0007 | critic_loss=2924.8091 | value_loss=370.9236 | v=371.8300 | q=360.0621 | 260.5 steps/s
+Step 770000 | actor_loss=0.0012 | critic_loss=1379.8599 | value_loss=161.7215 | v=306.1149 | q=297.3766 | 262.3 steps/s
+Step 780000 | actor_loss=0.0009 | critic_loss=2606.0874 | value_loss=415.1866 | v=375.4355 | q=354.6627 | 264.1 steps/s
+Step 790000 | actor_loss=0.0030 | critic_loss=1175.6169 | value_loss=386.9656 | v=316.4962 | q=302.7111 | 265.9 steps/s
+Step 800000 | actor_loss=0.0010 | critic_loss=5709.0327 | value_loss=296.6363 | v=336.5807 | q=317.8088 | 267.7 steps/s
+  Eval (N=64): return=-2.624±18.962 | ep_len=80.0 | profile wall=84.0s (policy 5% 3.2ms/step | env_step 23% 16.0ms/step | reset 65% | collect 8% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=12.2525 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0667 | worl_success_rate_pct=46.67 worl_collision_rate_pct=40.00 worl_off_road_rate_pct=0.00 worl_goal_completion_rate_pct=66.67
+  Saved checkpoint to checkpoints/agent_step_800000
+Step 810000 | actor_loss=0.0006 | critic_loss=2335.7485 | value_loss=591.1453 | v=402.8552 | q=394.0504 | 262.1 steps/s
+Step 820000 | actor_loss=0.0005 | critic_loss=3066.2104 | value_loss=614.5161 | v=397.4529 | q=370.8297 | 263.8 steps/s
+Step 830000 | actor_loss=0.0005 | critic_loss=1974.5989 | value_loss=617.4662 | v=352.5055 | q=353.7540 | 265.5 steps/s
+Step 840000 | actor_loss=0.0033 | critic_loss=3697.6270 | value_loss=827.2327 | v=390.3747 | q=392.0562 | 267.2 steps/s
+Step 850000 | actor_loss=0.0005 | critic_loss=3964.1885 | value_loss=717.8193 | v=379.2927 | q=370.1427 | 268.8 steps/s
+Step 860000 | actor_loss=0.0003 | critic_loss=2640.8198 | value_loss=389.8757 | v=363.1234 | q=365.9058 | 270.5 steps/s
+Step 870000 | actor_loss=0.0016 | critic_loss=2989.5068 | value_loss=359.4590 | v=471.5291 | q=453.5659 | 272.1 steps/s
+Step 880000 | actor_loss=0.0027 | critic_loss=7365.3599 | value_loss=1168.2169 | v=466.9122 | q=431.2168 | 273.7 steps/s
+Step 890000 | actor_loss=0.0005 | critic_loss=5647.6768 | value_loss=849.4862 | v=441.7394 | q=422.8245 | 275.3 steps/s
+Step 900000 | actor_loss=0.0004 | critic_loss=3182.6104 | value_loss=530.1136 | v=459.4539 | q=449.2978 | 276.9 steps/s
+  Eval (N=64): return=-1.353±18.237 | ep_len=80.0 | profile wall=83.9s (policy 5% 3.1ms/step | env_step 23% 15.9ms/step | reset 65% | collect 8% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=10.6003 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0667 | worl_success_rate_pct=40.00 worl_collision_rate_pct=40.00 worl_off_road_rate_pct=0.00 worl_goal_completion_rate_pct=60.00
+  Saved checkpoint to checkpoints/agent_step_900000
+Step 910000 | actor_loss=0.0004 | critic_loss=3823.5520 | value_loss=2105.6543 | v=416.5012 | q=408.8087 | 271.4 steps/s
+Step 920000 | actor_loss=0.0010 | critic_loss=5170.6875 | value_loss=641.3416 | v=403.6038 | q=405.8661 | 273.0 steps/s
+Step 930000 | actor_loss=0.0005 | critic_loss=4152.7212 | value_loss=787.7995 | v=509.5920 | q=494.0756 | 274.5 steps/s
+Step 940000 | actor_loss=0.0010 | critic_loss=5709.6953 | value_loss=1078.5049 | v=499.9142 | q=488.6546 | 276.0 steps/s
+Step 950000 | actor_loss=0.0005 | critic_loss=4399.0483 | value_loss=698.3007 | v=481.0429 | q=465.0960 | 277.5 steps/s
+Step 960000 | actor_loss=0.0010 | critic_loss=6694.7588 | value_loss=1170.4059 | v=555.6508 | q=523.0613 | 279.0 steps/s
+Step 970000 | actor_loss=0.0006 | critic_loss=7251.0332 | value_loss=791.9331 | v=580.6830 | q=582.6444 | 280.5 steps/s
+Step 980000 | actor_loss=0.0028 | critic_loss=6379.3662 | value_loss=876.7550 | v=579.5790 | q=580.7124 | 281.9 steps/s
+Step 990000 | actor_loss=0.0034 | critic_loss=9944.5469 | value_loss=1521.3098 | v=596.2935 | q=582.4638 | 283.4 steps/s
+Saved final checkpoint to checkpoints/agent_final
+
+Training complete! Total time: 0.98 hours

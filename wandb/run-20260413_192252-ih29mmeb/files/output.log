@@ -1,0 +1,20 @@
+
+Starting training for 500000 steps ...
+/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/jax/_src/interpreters/mlir.py:1135: UserWarning: A large amount of constants were captured during lowering (2.08GB total). If this is intentional, disable this warning by setting JAX_CAPTURED_CONSTANTS_WARN_BYTES=-1. To obtain a report of where these constants were encountered, set JAX_CAPTURED_CONSTANTS_REPORT_FRAMES=-1.
+  warnings.warn(message)
+  0%|                                                                                                         | 177/500000 [00:34<26:52:28,  5.17it/s]
+Step 0 | actor_loss=229.7035 | critic_loss=114.8339 | value_loss=18.8417 | v=0.4690 | q=-5.6750 | 0.0 steps/s
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 325, in <module>
+    main()
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 245, in main
+    agent, info = agent.update(sample)
+  File "<string>", line 1, in <lambda>
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 325, in <module>
+    main()
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 245, in main
+    agent, info = agent.update(sample)
+  File "<string>", line 1, in <lambda>
+KeyboardInterrupt

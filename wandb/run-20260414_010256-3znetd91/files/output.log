@@ -1,0 +1,17 @@
+
+Starting training for 500000 steps ...
+ 20%|█▉        | 99982/500000 [09:27<11:11, 595.75it/s]/home/mech/btech/me1222006/scratch/projects/IDQL/jaxrl5/wrappers/../../launcher/examples/scenario_to_waymax.py:242: UserWarning: Explicitly requested dtype <class 'jax.numpy.int64'> requested in array is not available, and will be truncated to dtype int32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+Step 0 | actor_loss=223.6415 | critic_loss=117.7397 | value_loss=19.4620 | v=0.4677 | q=-6.2018 | 0.0 steps/s
+Step 10000 | actor_loss=0.1503 | critic_loss=1.1738 | value_loss=0.1942 | v=21.8964 | q=22.3990 | 23.3 steps/s
+Step 20000 | actor_loss=0.0390 | critic_loss=1.4018 | value_loss=0.1216 | v=31.6570 | q=31.3424 | 45.0 steps/s
+Step 30000 | actor_loss=0.0238 | critic_loss=0.7857 | value_loss=0.1148 | v=28.1606 | q=27.8013 | 65.1 steps/s
+Step 40000 | actor_loss=0.0129 | critic_loss=0.6011 | value_loss=0.0860 | v=26.8609 | q=26.9636 | 84.0 steps/s
+Step 50000 | actor_loss=0.0129 | critic_loss=0.5010 | value_loss=0.0602 | v=25.2987 | q=24.9932 | 101.5 steps/s
+Step 60000 | actor_loss=0.0150 | critic_loss=0.5052 | value_loss=0.0446 | v=25.2195 | q=24.7155 | 118.0 steps/s
+Step 70000 | actor_loss=0.0110 | critic_loss=0.3091 | value_loss=0.0301 | v=23.7271 | q=23.6185 | 133.4 steps/s
+Step 80000 | actor_loss=0.0199 | critic_loss=0.2972 | value_loss=0.0373 | v=24.7353 | q=24.2605 | 148.0 steps/s
+Step 90000 | actor_loss=0.0056 | critic_loss=0.2312 | value_loss=0.0265 | v=23.6675 | q=23.5922 | 161.6 steps/s
+Step 100000 | actor_loss=0.0098 | critic_loss=0.2189 | value_loss=0.0222 | v=21.2929 | q=21.1908 | 174.4 steps/s
+  timestamp_micros=jnp.array(ts_micros_2d, dtype=jnp.int64),
+
+Eval:   4%|▎         | 37/1000 [21:19<9:50:28, 36.79s/it] 

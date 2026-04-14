@@ -1,0 +1,20 @@
+{"time":"2026-04-14T19:41:01.230066504+05:30","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2026-04-14T19:41:01.369745731+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": Moved Temporarily"}
+{"time":"2026-04-14T19:41:03.434409674+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": Moved Temporarily"}
+{"time":"2026-04-14T19:41:07.907337487+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": Moved Temporarily"}
+{"time":"2026-04-14T19:41:16.264745119+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": Moved Temporarily"}
+{"time":"2026-04-14T19:41:33.760051623+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": Moved Temporarily"}
+{"time":"2026-04-14T19:42:11.142277747+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": Moved Temporarily"}
+{"time":"2026-04-14T19:43:11.144810889+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": Moved Temporarily"}
+{"time":"2026-04-14T19:44:11.146709458+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": Moved Temporarily"}
+{"time":"2026-04-14T19:45:11.149301502+05:30","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": Moved Temporarily"}
+{"time":"2026-04-14T19:46:11.864427428+05:30","level":"INFO","msg":"stream: created new stream","id":"4jz6h7no"}
+{"time":"2026-04-14T19:46:11.864821574+05:30","level":"INFO","msg":"handler: started","stream_id":"4jz6h7no"}
+{"time":"2026-04-14T19:46:11.86733625+05:30","level":"INFO","msg":"stream: started","id":"4jz6h7no"}
+{"time":"2026-04-14T19:46:11.869692056+05:30","level":"INFO","msg":"stream: closing","id":"4jz6h7no"}
+{"time":"2026-04-14T19:46:11.869908704+05:30","level":"INFO","msg":"writer: started","stream_id":"4jz6h7no"}
+{"time":"2026-04-14T19:46:11.869976633+05:30","level":"INFO","msg":"sender: started","stream_id":"4jz6h7no"}
+{"time":"2026-04-14T19:46:14.107835165+05:30","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-04-14T19:46:14.107921184+05:30","level":"INFO","msg":"handler: closed","stream_id":"4jz6h7no"}
+{"time":"2026-04-14T19:46:14.108702447+05:30","level":"INFO","msg":"sender: closed","stream_id":"4jz6h7no"}
+{"time":"2026-04-14T19:46:14.108765556+05:30","level":"INFO","msg":"stream: closed","id":"4jz6h7no"}

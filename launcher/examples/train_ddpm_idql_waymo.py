@@ -6,11 +6,30 @@ DDPMIQLLearner, and periodically evaluates in Waymax.
 
 Usage:
     python launcher/examples/train_ddpm_idql_waymo.py \\
-        --dataset_path waymax_expert/waymo_train_10k.npz \\
-        --eval_data_dir /path/to/RawWaymo/training/ \\
-        --eval_num_scenarios 50 --eval_start_scenario 10000 \\
-        --eval_episodes 20 --max_steps 1000000 --eval_interval 100000 \\
-        --batch_size 256
+        --eval_data_dir ~/scratch/data/raw/validation \\
+        --max_steps 500000 --eval_interval 100000 --batch_size 512
+
+    Defaults: training data from ~/scratch/data/waymax_expert/waymo_train_10k.npz
+    (10k scenarios from extract_waymax_expert_data.py); eval uses up to 1k
+    validation scenarios (eval_num_scenarios=1000, eval_episodes=1000,
+    eval_start_scenario=0).
+
+    GPU (JAX): install a CUDA jaxlib matching the machine (e.g. pip install jax[cuda12]
+    per JAX docs), set CUDA_VISIBLE_DEVICES, then verify:
+        python -c "import jax; print(jax.default_backend(), jax.devices())"
+    Eval uses JAX for Waymax dynamics and the DDPM actor; NumPy featurization stays
+    on the host.
+
+    Each eval logs eval_profile_* scalars (and a profile line on stdout): time in
+    reset, agent.eval_actions, env.step, collect_episode_eval_stats, plus ms/step.
+
+    First timed eval can look much slower than later ones: XLA compiles `env.step`,
+    Waymax metric kernels, and the DDPM+Q `eval_actions` path on first use. A short
+    JIT warmup runs once after creating the agent (see warmup_waymax_eval_jit) so
+    the first full eval is closer to steady state.
+
+    Optional headless GIFs: set --eval_gif_dir to save matplotlib/Waymax frames
+    (no display; use MPLBACKEND=Agg). Requires imageio (already in requirements.txt).
 """
 
 import os
@@ -26,6 +45,8 @@ from jaxrl5.data.dataset import Dataset
 from jaxrl5.wrappers.waymax_wrapper import WaymaxGymWrapper
 from jaxrl5.wrappers import wrap_gym
 
+DEFAULT_WAYMAX_EXPERT_DIR = os.path.expanduser('~/scratch/data/waymax_expert')
+DEFAULT_DATASET_PATH = os.path.join(DEFAULT_WAYMAX_EXPERT_DIR, 'waymo_train_10k.npz')
 
 # --- Action normalization (raw <-> [-1, 1]) ---
 ACT_LOW = np.array([-10.0, -0.8], dtype=np.float32)
@@ -41,6 +62,72 @@ def denormalize_action(norm_action):
     """Map [-1, 1] -> raw [accel, steer]."""
     norm_action = np.asarray(norm_action, dtype=np.float32)
     return ACT_LOW + (norm_action + 1.0) * 0.5 * (ACT_HIGH - ACT_LOW)
+
+
+def warmup_waymax_eval_jit(eval_env, agent, denormalize_fn):
+    """Compile JAX paths (env.step, Waymax metrics, eval_actions) before timed eval."""
+    base = eval_env.unwrapped
+    for _ in range(2):
+        obs = eval_env.reset()
+        done = False
+        steps = 0
+        while not done and steps < 80:
+            norm_action, agent = agent.eval_actions(obs)
+            obs, _, done, _ = eval_env.step(denormalize_fn(norm_action))
+            steps += 1
+        if hasattr(base, "collect_episode_eval_stats"):
+            base.collect_episode_eval_stats()
+    eval_env.reset()
+    return agent
+
+
+def record_eval_rollout_gif(agent, eval_env, gif_path, denormalize_fn, frame_stride=2, max_steps=80):
+    """Save one rollout as GIF using Waymax matplotlib viz (headless-safe).
+
+    Returns ``(agent, True)`` if a GIF was written, ``(agent, False)`` if imports
+    or rendering failed (training should continue). ``agent`` is always the
+    post-rollout handle when the rollout loop ran, else unchanged on import failure.
+    """
+    try:
+        import matplotlib
+
+        matplotlib.use("Agg")
+        import imageio.v2 as imageio
+        from waymax.visualization.viz import plot_simulator_state
+    except ImportError as e:
+        print(
+            "  Eval GIF skipped: matplotlib/imageio import failed "
+            f"({e}). Fix env e.g. `pip install -U 'pyparsing>=3' matplotlib` "
+            "or unset --eval_gif_dir.",
+            flush=True,
+        )
+        return agent, False
+
+    try:
+        base = eval_env.unwrapped
+        frames = []
+        obs = eval_env.reset()
+        for t in range(max_steps):
+            state = jax.device_get(base._state)
+            if t % frame_stride == 0:
+                frames.append(plot_simulator_state(state, use_log_traj=False))
+            norm_action, agent = agent.eval_actions(obs)
+            obs, _, done, _ = eval_env.step(denormalize_fn(norm_action))
+            if done:
+                state = jax.device_get(base._state)
+                if t % frame_stride != 0:
+                    frames.append(plot_simulator_state(state, use_log_traj=False))
+                break
+        if not frames:
+            return agent, False
+        parent = os.path.dirname(os.path.abspath(gif_path))
+        if parent:
+            os.makedirs(parent, exist_ok=True)
+        imageio.mimsave(gif_path, frames, duration=0.12, loop=0)
+        return agent, True
+    except Exception as e:
+        print(f"  Eval GIF skipped: {e}", flush=True)
+        return agent, False
 
 
 def load_waymo_dataset(path, do_normalize_actions=True):
@@ -76,47 +163,133 @@ def load_waymo_dataset(path, do_normalize_actions=True):
 
 
 def evaluate_waymax(agent, env, num_episodes):
-    """Evaluate the IDQL agent in Waymax."""
+    """Evaluate the IDQL agent in Waymax; aggregate returns, lengths, Waymax metrics, offline KPIs.
+
+    Also records wall time in coarse sections (perf_counter): reset, policy forward,
+    env.step (includes denormalize + Waymax step + featurization in the wrapper),
+    and collect_episode_eval_stats. Use these to see where eval time goes.
+    """
     all_returns = []
     all_lengths = []
+    episode_stat_dicts = []
+
+    base = env.unwrapped
+    t_eval0 = time.time()
+
+    t_reset_total = 0.0
+    t_policy_total = 0.0
+    t_step_total = 0.0
+    t_collect_total = 0.0
+    n_env_steps = 0
 
     for ep in tqdm(range(num_episodes), desc="Eval", leave=False):
+        t0 = time.perf_counter()
         obs = env.reset()
+        t_reset_total += time.perf_counter() - t0
         done = False
         ep_reward = 0.0
         ep_length = 0
 
         while not done and ep_length < 80:
+            t0 = time.perf_counter()
             norm_action, agent = agent.eval_actions(obs)
+            t_policy_total += time.perf_counter() - t0
+
+            t0 = time.perf_counter()
             raw_action = denormalize_action(norm_action)
             obs, reward, done, info = env.step(raw_action)
+            t_step_total += time.perf_counter() - t0
+            n_env_steps += 1
+
             ep_reward += reward
             ep_length += 1
 
         all_returns.append(ep_reward)
         all_lengths.append(ep_length)
 
-    return {
-        "return_mean": np.mean(all_returns),
-        "return_std": np.std(all_returns),
-        "episode_length_mean": np.mean(all_lengths),
-        "episode_length_std": np.std(all_lengths),
-        "num_episodes": num_episodes,
+        if hasattr(base, "collect_episode_eval_stats"):
+            t0 = time.perf_counter()
+            episode_stat_dicts.append(base.collect_episode_eval_stats())
+            t_collect_total += time.perf_counter() - t0
+
+    eval_elapsed_s = time.time() - t_eval0
+    accounted_s = t_reset_total + t_policy_total + t_step_total + t_collect_total
+
+    out = {
+        "return_mean": float(np.mean(all_returns)),
+        "return_std": float(np.std(all_returns)),
+        "episode_length_mean": float(np.mean(all_lengths)),
+        "episode_length_std": float(np.std(all_lengths)),
+        "num_episodes": int(num_episodes),
+        "eval_wall_time_s": float(eval_elapsed_s),
+        "eval_profile_reset_s": float(t_reset_total),
+        "eval_profile_policy_s": float(t_policy_total),
+        "eval_profile_env_step_s": float(t_step_total),
+        "eval_profile_collect_stats_s": float(t_collect_total),
+        "eval_profile_n_env_steps": int(n_env_steps),
+        "eval_profile_accounted_s": float(accounted_s),
+        "eval_profile_unaccounted_s": float(max(0.0, eval_elapsed_s - accounted_s)),
     }
+    if n_env_steps > 0:
+        out["eval_profile_policy_ms_per_env_step"] = float(
+            1000.0 * t_policy_total / n_env_steps
+        )
+        out["eval_profile_env_step_ms_per_env_step"] = float(
+            1000.0 * t_step_total / n_env_steps
+        )
+    if num_episodes > 0:
+        out["eval_profile_reset_ms_per_episode"] = float(
+            1000.0 * t_reset_total / num_episodes
+        )
+        out["eval_profile_collect_stats_ms_per_episode"] = float(
+            1000.0 * t_collect_total / num_episodes
+        )
+
+    if episode_stat_dicts:
+        keys = set()
+        for d in episode_stat_dicts:
+            keys.update(d.keys())
+        for k in sorted(keys):
+            vals = [float(d[k]) for d in episode_stat_dicts if k in d and np.isfinite(d[k])]
+            if not vals:
+                continue
+            out[f"{k}_mean"] = float(np.mean(vals))
+            out[f"{k}_std"] = float(np.std(vals))
+        if "success_mean" in out:
+            out["success_rate_pct"] = float(100.0 * out["success_mean"])
+        if "collision_mean" in out:
+            out["collision_rate_pct"] = float(100.0 * out["collision_mean"])
+        if "off_road_mean" in out:
+            out["off_road_rate_pct"] = float(100.0 * out["off_road_mean"])
+        if "goal_completed_mean" in out:
+            out["goal_completion_rate_pct"] = float(100.0 * out["goal_completed_mean"])
+
+    return out
 
 
 def main():
     parser = argparse.ArgumentParser(description="Train DDPM-IQL on Waymo offline data")
-    parser.add_argument("--dataset_path", type=str, required=True,
-                        help="Path to .npz dataset from extract_waymax_expert_data.py")
+    parser.add_argument(
+        "--dataset_path", type=str, default=DEFAULT_DATASET_PATH,
+        help=f"Path to .npz from extract_waymax_expert_data.py (default: {DEFAULT_DATASET_PATH})",
+    )
     parser.add_argument("--eval_data_dir", type=str, default=None,
                         help="Directory with raw Waymo TFRecord files for eval")
-    parser.add_argument("--eval_num_scenarios", type=int, default=50)
-    parser.add_argument("--eval_start_scenario", type=int, default=10000)
+    parser.add_argument(
+        "--eval_num_scenarios", type=int, default=1000,
+        help="Max scenarios in the eval TFRecord iterator (use 1000 for 1k-scenario eval pool).",
+    )
+    parser.add_argument(
+        "--eval_start_scenario", type=int, default=0,
+        help="Skip this many scenarios in eval_dir before the eval pool (use 0 for validation/).",
+    )
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--max_steps", type=int, default=500000)
     parser.add_argument("--batch_size", type=int, default=512)
-    parser.add_argument("--eval_episodes", type=int, default=50)
+    parser.add_argument(
+        "--eval_episodes", type=int, default=1000,
+        help="Rollouts per eval call; set equal to eval_num_scenarios for one episode per scenario.",
+    )
     parser.add_argument("--log_interval", type=int, default=1000)
     parser.add_argument("--eval_interval", type=int, default=50000)
     parser.add_argument("--save_interval", type=int, default=100000)
@@ -126,6 +299,23 @@ def main():
     parser.add_argument("--experiment_name", type=str, default="ddpm_iql_waymax_302d")
     parser.add_argument("--save_dir", type=str, default="checkpoints")
     parser.add_argument("--no_wandb", action="store_true", default=False)
+    parser.add_argument(
+        "--eval_gif_dir",
+        type=str,
+        default=None,
+        help=(
+            "If set, after each eval save one rollout GIF here (matplotlib Agg; no display). "
+            "Uses one extra scenario (one reset + rollout after the main eval). "
+            "Requires a working matplotlib stack (e.g. pip install -U 'pyparsing>=3' matplotlib); "
+            "if imports fail, GIF is skipped and training continues."
+        ),
+    )
+    parser.add_argument(
+        "--eval_gif_stride",
+        type=int,
+        default=2,
+        help="Save every k-th timestep as a frame (smaller GIFs).",
+    )
 
     parser.add_argument("--actor_lr", type=float, default=3e-4)
     parser.add_argument("--critic_lr", type=float, default=3e-4)
@@ -142,6 +332,12 @@ def main():
 
     if args.no_normalize_returns:
         args.normalize_returns = False
+
+    print(
+        f"JAX default_backend={jax.default_backend()} | "
+        f"devices={jax.devices()}",
+        flush=True,
+    )
 
     # --- Load dataset ---
     print(f"Loading dataset from {args.dataset_path}")
@@ -210,11 +406,27 @@ def main():
         **rl_config,
     )
 
+    if eval_env is not None:
+        print(
+            "Warmup: compiling Waymax env.step + metrics + eval policy (not counted in eval) ...",
+            flush=True,
+        )
+        t_w = time.perf_counter()
+        agent = warmup_waymax_eval_jit(eval_env, agent, denormalize_action)
+        print(f"  Warmup done in {time.perf_counter() - t_w:.1f}s", flush=True)
+
+    if args.eval_gif_dir:
+        os.makedirs(args.eval_gif_dir, exist_ok=True)
+
     # --- W&B ---
     if not args.no_wandb:
         wandb.init(project=args.project, name=args.experiment_name)
         wandb.config.update(vars(args))
         wandb.config.update(rl_config)
+        wandb.config.update({
+            "jax_default_backend": jax.default_backend(),
+            "jax_devices_repr": str(jax.devices()),
+        })
 
     # --- Training loop ---
     print(f"\nStarting training for {args.max_steps} steps ...")
@@ -258,13 +470,69 @@ def main():
             eval_info = evaluate_waymax(agent, eval_env, args.eval_episodes)
 
             if not args.no_wandb:
-                wandb.log({f"eval/{k}": v for k, v in eval_info.items()}, step=i)
+                eval_log = {}
+                for k, v in eval_info.items():
+                    try:
+                        x = float(v)
+                        if np.isfinite(x):
+                            eval_log[f"eval/{k}"] = x
+                    except (TypeError, ValueError):
+                        pass
+                wandb.log(eval_log, step=i)
 
+            extra = " ".join(
+                f"{k}={eval_info[k]:.4f}"
+                for k in sorted(eval_info)
+                if k.startswith("waymax_") and k.endswith("_mean")
+            )
+            kpi = " ".join(
+                f"{k.replace('_rate_pct', '')}={eval_info[k]:.2f}%"
+                for k in (
+                    "success_rate_pct",
+                    "collision_rate_pct",
+                    "off_road_rate_pct",
+                    "goal_completion_rate_pct",
+                )
+                if k in eval_info
+            )
+            wall = float(eval_info.get("eval_wall_time_s", 0.0))
+            pol = float(eval_info.get("eval_profile_policy_s", 0.0))
+            stp = float(eval_info.get("eval_profile_env_step_s", 0.0))
+            rst = float(eval_info.get("eval_profile_reset_s", 0.0))
+            col = float(eval_info.get("eval_profile_collect_stats_s", 0.0))
+            unacc = float(eval_info.get("eval_profile_unaccounted_s", 0.0))
+            pol_ms = float(eval_info.get("eval_profile_policy_ms_per_env_step", 0.0))
+            stp_ms = float(eval_info.get("eval_profile_env_step_ms_per_env_step", 0.0))
+            pct = lambda x: (100.0 * x / wall) if wall > 0 else 0.0
+            profile_str = (
+                f"profile wall={wall:.1f}s "
+                f"(policy {pct(pol):.0f}% {pol_ms:.1f}ms/step | "
+                f"env_step {pct(stp):.0f}% {stp_ms:.1f}ms/step | "
+                f"reset {pct(rst):.0f}% | collect {pct(col):.0f}% | "
+                f"unaccounted {pct(unacc):.0f}%)"
+            )
             print(
                 f"  Eval (N={args.N}): "
-                f"return={eval_info['return_mean']:.2f}±{eval_info['return_std']:.2f} | "
-                f"ep_len={eval_info['episode_length_mean']:.1f}"
+                f"return={eval_info['return_mean']:.3f}±{eval_info['return_std']:.3f} | "
+                f"ep_len={eval_info['episode_length_mean']:.1f} | "
+                f"{profile_str} | "
+                f"{extra} | {kpi}",
+                flush=True,
             )
+
+            if args.eval_gif_dir:
+                gif_path = os.path.join(args.eval_gif_dir, f"eval_step_{i}.gif")
+                agent, gif_ok = record_eval_rollout_gif(
+                    agent,
+                    eval_env,
+                    gif_path,
+                    denormalize_action,
+                    frame_stride=args.eval_gif_stride,
+                )
+                if gif_ok:
+                    print(f"  Eval GIF saved: {gif_path}", flush=True)
+                    if not args.no_wandb:
+                        wandb.log({"eval/rollout_gif_path": gif_path}, step=i)
 
             agent = agent.replace(**training_time_inference_params)
 

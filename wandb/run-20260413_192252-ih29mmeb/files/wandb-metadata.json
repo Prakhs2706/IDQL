@@ -1,0 +1,56 @@
+{
+  "os": "Linux-3.10.0-1160.el7.x86_64-x86_64-with-glibc2.17",
+  "python": "CPython 3.10.18",
+  "startedAt": "2026-04-13T13:52:52.969019Z",
+  "args": [
+    "--dataset_path",
+    "/home/mech/btech/me1222006/scratch/data/waymax_expert/waymo_train_10k.npz",
+    "--eval_data_dir",
+    "/home/mech/btech/me1222006/scratch/data/raw/validation",
+    "--eval_num_scenarios",
+    "1000",
+    "--eval_start_scenario",
+    "0",
+    "--eval_episodes",
+    "1000",
+    "--max_steps",
+    "500000",
+    "--eval_interval",
+    "100000",
+    "--batch_size",
+    "512"
+  ],
+  "program": "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py",
+  "git": {
+    "remote": "https://github.com/Prakhs2706/IDQL.git",
+    "commit": "b1f7970d7cf822cf1f560d01d2fdcbebfceb015b"
+  },
+  "email": "prakharagarwal.iitdelhi@gmail.com",
+  "root": "/scratch/mech/btech/me1222006/projects/IDQL",
+  "host": "scai02",
+  "executable": "/home/mech/btech/me1222006/anaconda3/envs/waymax/bin/python",
+  "cpu_count": 32,
+  "cpu_count_logical": 64,
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "804913152000",
+      "used": "41147486208"
+    }
+  },
+  "memory": {
+    "total": "1082150244352"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA A100-SXM4-80GB",
+      "memoryTotal": "85899345920",
+      "cudaCores": 6912,
+      "architecture": "Ampere",
+      "uuid": "GPU-41a6d004-b421-d8d2-8bd2-68e80b3b54b7"
+    }
+  ],
+  "cudaVersion": "12.4",
+  "writerId": "88gmk61ca6owinv2ft1ba8wb8uh2zytm"
+}

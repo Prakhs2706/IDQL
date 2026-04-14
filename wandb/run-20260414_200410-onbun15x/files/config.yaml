@@ -1,0 +1,143 @@
+_wandb:
+    value:
+        cli_version: 0.23.0
+        e:
+            5rbw7t7bzb72nn0wg2n6x3058rt5zwtw:
+                args:
+                    - --dataset_path
+                    - /home/mech/btech/me1222006/scratch/data/waymax_expert/waymo_train_10k.npz
+                    - --eval_data_dir
+                    - /home/mech/btech/me1222006/scratch/data/raw/validation
+                    - --eval_num_scenarios
+                    - "10"
+                    - --eval_start_scenario
+                    - "0"
+                    - --eval_episodes
+                    - "10"
+                    - --max_steps
+                    - "1000000"
+                    - --eval_interval
+                    - "100000"
+                    - --batch_size
+                    - "512"
+                    - --eval_gif_dir
+                    - /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs
+                cpu_count: 32
+                cpu_count_logical: 32
+                cudaVersion: "12.2"
+                disk:
+                    /:
+                        total: "804913152000"
+                        used: "29059158016"
+                email: prakharagarwal.iitdelhi@gmail.com
+                executable: /home/mech/btech/me1222006/anaconda3/envs/waymax/bin/python
+                git:
+                    commit: b1f7970d7cf822cf1f560d01d2fdcbebfceb015b
+                    remote: https://github.com/Prakhs2706/IDQL.git
+                gpu: NVIDIA A100 80GB PCIe
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ampere
+                      cudaCores: 6912
+                      memoryTotal: "85899345920"
+                      name: NVIDIA A100 80GB PCIe
+                      uuid: GPU-3622dfd3-92cf-0049-a8ad-b61ecd41119e
+                host: scai01
+                memory:
+                    total: "1082061991936"
+                os: Linux-3.10.0-1160.el7.x86_64-x86_64-with-glibc2.17
+                program: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py
+                python: CPython 3.10.18
+                root: /scratch/mech/btech/me1222006/projects/IDQL
+                startedAt: "2026-04-14T14:34:10.510852Z"
+                writerId: 5rbw7t7bzb72nn0wg2n6x3058rt5zwtw
+        m: []
+        python_version: 3.10.18
+        t:
+            "1":
+                - 2
+                - 3
+                - 12
+                - 45
+            "2":
+                - 2
+                - 3
+                - 12
+                - 45
+            "3":
+                - 13
+                - 61
+            "4": 3.10.18
+            "5": 0.23.0
+            "12": 0.23.0
+            "13": linux-x86_64
+M:
+    value: 0
+"N":
+    value: 64
+T:
+    value: 5
+actor_dropout_rate:
+    value: 0.1
+actor_layer_norm:
+    value: true
+actor_lr:
+    value: 0.0003
+actor_num_blocks:
+    value: 3
+actor_tau:
+    value: 0.001
+batch_size:
+    value: 512
+beta_schedule:
+    value: vp
+critic_hyperparam:
+    value: 0.9
+critic_lr:
+    value: 0.0003
+dataset_path:
+    value: /home/mech/btech/me1222006/scratch/data/waymax_expert/waymo_train_10k.npz
+decay_steps:
+    value: 1000000
+eval_data_dir:
+    value: /home/mech/btech/me1222006/scratch/data/raw/validation
+eval_episodes:
+    value: 10
+eval_gif_dir:
+    value: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs
+eval_gif_stride:
+    value: 2
+eval_interval:
+    value: 100000
+eval_num_scenarios:
+    value: 10
+eval_start_scenario:
+    value: 0
+experiment_name:
+    value: ddpm_iql_waymax_302d
+jax_default_backend:
+    value: gpu
+jax_devices_repr:
+    value: '[CudaDevice(id=0)]'
+log_interval:
+    value: 1000
+max_steps:
+    value: 1000000
+no_normalize_returns:
+    value: false
+no_wandb:
+    value: false
+normalize_returns:
+    value: false
+project:
+    value: idql_waymo
+save_dir:
+    value: checkpoints
+save_interval:
+    value: 100000
+seed:
+    value: 0
+value_layer_norm:
+    value: true
+value_lr:
+    value: 0.0003

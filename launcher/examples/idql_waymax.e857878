@@ -1,0 +1,160 @@
+Warning: Gym version v0.24.0 has a number of critical issues with `gym.make` such that the `reset` and `step` functions are called before returning the environment. It is recommend to downgrading to v0.23.1 or upgrading to v0.25.1
+Additionally, Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/tensorflow_probability/python/internal/backend/jax/ops.py:681: DeprecationWarning: jax.interpreters.xla.pytype_aval_mappings is deprecated.
+  jax.interpreters.xla.pytype_aval_mappings[onp.ndarray])
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1776175721.078519  221123 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 18291 MB memory:  -> device: 0, name: NVIDIA A100 80GB PCIe, pci bus id: 0000:81:00.0, compute capability: 8.0
+/home/mech/btech/me1222006/scratch/projects/IDQL/jaxrl5/wrappers/../../launcher/examples/scenario_to_waymax.py:242: UserWarning: Explicitly requested dtype <class 'jax.numpy.int64'> requested in array is not available, and will be truncated to dtype int32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  timestamp_micros=jnp.array(ts_micros_2d, dtype=jnp.int64),
+2026-04-14 19:38:43.787025: W external/xla/xla/service/gpu/autotuning/gemm_fusion_autotuner.cc:1092] Compiling 167 configs for 6 fusions on a single thread.
+2026-04-14 19:39:38.216422: W external/xla/xla/service/gpu/autotuning/gemm_fusion_autotuner.cc:1092] Compiling 59 configs for 2 fusions on a single thread.
+wandb: Network error (ProxyError), entering retry loop.
+wandb: W&B API key is configured. Use `wandb login --relogin` to force relogin
+wandb: Network error (ProxyError), entering retry loop.
+wandb: ERROR Run initialization has timed out after 90.0 sec. Please try increasing the timeout with the `init_timeout` setting: `wandb.init(settings=wandb.Settings(init_timeout=120))`.
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/asyncio/locks.py", line 214, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/asyncio/tasks.py", line 456, in wait_for
+    return fut.result()
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/response_handle.py", line 82, in wait_async
+    await asyncio.wait_for(self._done_event.wait(), timeout=timeout)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/asyncio/tasks.py", line 458, in wait_for
+    raise exceptions.TimeoutError() from exc
+asyncio.exceptions.TimeoutError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1004, in init
+    result = wait_with_progress(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/wait_with_progress.py", line 23, in wait_with_progress
+    return wait_all_with_progress(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/wait_with_progress.py", line 77, in wait_all_with_progress
+    return asyncer.run(progress_loop_with_timeout)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 136, in run
+    return future.result()
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/concurrent/futures/_base.py", line 458, in result
+    return self.__get_result()
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 219, in _wrap
+    return await fn()
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/wait_with_progress.py", line 72, in progress_loop_with_timeout
+    return await _wait_handles_async(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/wait_with_progress.py", line 95, in _wait_handles_async
+    async with asyncio_compat.open_task_group() as task_group:
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/contextlib.py", line 206, in __aexit__
+    await anext(self.gen)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_compat.py", line 240, in open_task_group
+    await task_group._wait_all(race=race, timeout=exit_timeout)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_compat.py", line 180, in _wait_all
+    raise exc
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/wait_with_progress.py", line 93, in wait_single
+    results[index] = await handle.wait_async(timeout=timeout)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/mailbox_handle.py", line 133, in wait_async
+    response = await self._handle.wait_async(timeout=timeout)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/response_handle.py", line 90, in wait_async
+    raise TimeoutError(
+TimeoutError: Timed out waiting for response on drgti10yjhgm
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 552, in <module>
+    main()
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 402, in main
+    wandb.init(project=args.project, name=args.experiment_name)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1603, in init
+    get_sentry().reraise(e)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 190, in reraise
+    raise exc.with_traceback(tb)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1586, in init
+    run = wi.init(run_settings, run_config, run_printer)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1020, in init
+    raise CommError(
+wandb.errors.errors.CommError: Run initialization has timed out after 90.0 sec. Please try increasing the timeout with the `init_timeout` setting: `wandb.init(settings=wandb.Settings(init_timeout=120))`.
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/asyncio/locks.py", line 214, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/asyncio/tasks.py", line 456, in wait_for
+    return fut.result()
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/response_handle.py", line 82, in wait_async
+    await asyncio.wait_for(self._done_event.wait(), timeout=timeout)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/asyncio/tasks.py", line 458, in wait_for
+    raise exceptions.TimeoutError() from exc
+asyncio.exceptions.TimeoutError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1004, in init
+    result = wait_with_progress(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/wait_with_progress.py", line 23, in wait_with_progress
+    return wait_all_with_progress(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/wait_with_progress.py", line 77, in wait_all_with_progress
+    return asyncer.run(progress_loop_with_timeout)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 136, in run
+    return future.result()
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/concurrent/futures/_base.py", line 458, in result
+    return self.__get_result()
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 219, in _wrap
+    return await fn()
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/wait_with_progress.py", line 72, in progress_loop_with_timeout
+    return await _wait_handles_async(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/wait_with_progress.py", line 95, in _wait_handles_async
+    async with asyncio_compat.open_task_group() as task_group:
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/contextlib.py", line 206, in __aexit__
+    await anext(self.gen)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_compat.py", line 240, in open_task_group
+    await task_group._wait_all(race=race, timeout=exit_timeout)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_compat.py", line 180, in _wait_all
+    raise exc
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/wait_with_progress.py", line 93, in wait_single
+    results[index] = await handle.wait_async(timeout=timeout)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/mailbox_handle.py", line 133, in wait_async
+    response = await self._handle.wait_async(timeout=timeout)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/mailbox/response_handle.py", line 90, in wait_async
+    raise TimeoutError(
+TimeoutError: Timed out waiting for response on drgti10yjhgm
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 552, in <module>
+    main()
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 402, in main
+    wandb.init(project=args.project, name=args.experiment_name)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1603, in init
+    get_sentry().reraise(e)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 190, in reraise
+    raise exc.with_traceback(tb)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1586, in init
+    run = wi.init(run_settings, run_config, run_printer)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1020, in init
+    raise CommError(
+wandb.errors.errors.CommError: Run initialization has timed out after 90.0 sec. Please try increasing the timeout with the `init_timeout` setting: `wandb.init(settings=wandb.Settings(init_timeout=120))`.

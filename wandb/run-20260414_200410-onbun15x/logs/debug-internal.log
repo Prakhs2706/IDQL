@@ -1,0 +1,11 @@
+{"time":"2026-04-14T20:04:10.96845604+05:30","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2026-04-14T20:04:11.587087039+05:30","level":"INFO","msg":"stream: created new stream","id":"onbun15x"}
+{"time":"2026-04-14T20:04:11.587402006+05:30","level":"INFO","msg":"handler: started","stream_id":"onbun15x"}
+{"time":"2026-04-14T20:04:11.589698294+05:30","level":"INFO","msg":"stream: started","id":"onbun15x"}
+{"time":"2026-04-14T20:04:11.591781784+05:30","level":"INFO","msg":"writer: started","stream_id":"onbun15x"}
+{"time":"2026-04-14T20:04:11.591975982+05:30","level":"INFO","msg":"sender: started","stream_id":"onbun15x"}
+{"time":"2026-04-14T20:22:57.904836134+05:30","level":"INFO","msg":"stream: closing","id":"onbun15x"}
+{"time":"2026-04-14T20:22:59.937166103+05:30","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-04-14T20:23:00.58460532+05:30","level":"INFO","msg":"handler: closed","stream_id":"onbun15x"}
+{"time":"2026-04-14T20:23:00.585554851+05:30","level":"INFO","msg":"sender: closed","stream_id":"onbun15x"}
+{"time":"2026-04-14T20:23:00.58561851+05:30","level":"INFO","msg":"stream: closed","id":"onbun15x"}

@@ -1,0 +1,49 @@
+Warning: Gym version v0.24.0 has a number of critical issues with `gym.make` such that the `reset` and `step` functions are called before returning the environment. It is recommend to downgrading to v0.23.1 or upgrading to v0.25.1
+Additionally, Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/tensorflow_probability/python/internal/backend/jax/ops.py:681: DeprecationWarning: jax.interpreters.xla.pytype_aval_mappings is deprecated.
+  jax.interpreters.xla.pytype_aval_mappings[onp.ndarray])
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1776175226.813483  219221 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 18291 MB memory:  -> device: 0, name: NVIDIA A100 80GB PCIe, pci bus id: 0000:81:00.0, compute capability: 8.0
+/home/mech/btech/me1222006/scratch/projects/IDQL/jaxrl5/wrappers/../../launcher/examples/scenario_to_waymax.py:242: UserWarning: Explicitly requested dtype <class 'jax.numpy.int64'> requested in array is not available, and will be truncated to dtype int32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  timestamp_micros=jnp.array(ts_micros_2d, dtype=jnp.int64),
+2026-04-14 19:30:32.564185: W external/xla/xla/service/gpu/autotuning/gemm_fusion_autotuner.cc:1092] Compiling 167 configs for 6 fusions on a single thread.
+2026-04-14 19:31:30.494161: W external/xla/xla/service/gpu/autotuning/gemm_fusion_autotuner.cc:1092] Compiling 59 configs for 2 fusions on a single thread.
+wandb: Currently logged in as: prakharagarwal-iitdelhi (BTP2) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/analytics/sentry.py:279: DeprecationWarning: The `Scope.user` setter is deprecated in favor of `Scope.set_user()`.
+  self.scope.user = {"email": email}
+wandb: setting up run s1ddqw0m
+/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/analytics/sentry.py:279: DeprecationWarning: The `Scope.user` setter is deprecated in favor of `Scope.set_user()`.
+  self.scope.user = {"email": email}
+wandb: Tracking run with wandb version 0.23.0
+wandb: Run data is saved locally in /scratch/mech/btech/me1222006/projects/IDQL/wandb/run-20260414_193245-s1ddqw0m
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ddpm_iql_waymax_302d
+wandb: ⭐️ View project at https://wandb.ai/BTP2/idql_waymo
+wandb: 🚀 View run at https://wandb.ai/BTP2/idql_waymo/runs/s1ddqw0m
+E0414 19:33:30.905983  219221 pjrt_stream_executor_client.cc:3077] Execution of replica 0 failed: INTERNAL: Failed to allocate 1087200000 bytes for new constant
+jax.errors.SimplifiedTraceback: For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 552, in <module>
+    main()
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 417, in main
+    sample = ds.sample_jax(args.batch_size, keys=None)
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/jaxrl5/data/dataset.py", line 128, in sample_jax
+    self.rng, sample = self._sample_jax(self.rng)
+jaxlib.xla_extension.XlaRuntimeError: INTERNAL: Failed to allocate 1087200000 bytes for new constant
+jax.errors.SimplifiedTraceback: For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 552, in <module>
+    main()
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 417, in main
+    sample = ds.sample_jax(args.batch_size, keys=None)
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/jaxrl5/data/dataset.py", line 128, in sample_jax
+    self.rng, sample = self._sample_jax(self.rng)
+jaxlib.xla_extension.XlaRuntimeError: INTERNAL: Failed to allocate 1087200000 bytes for new constant

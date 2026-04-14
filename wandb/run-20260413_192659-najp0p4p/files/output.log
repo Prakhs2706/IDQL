@@ -1,0 +1,37 @@
+
+Starting training for 500000 steps ...
+ 20%|████████████████████▉                                                                                    | 99997/500000 [08:54<11:30, 578.90it/s]/home/mech/btech/me1222006/scratch/projects/IDQL/jaxrl5/wrappers/../../launcher/examples/scenario_to_waymax.py:242: UserWarning: Explicitly requested dtype <class 'jax.numpy.int64'> requested in array is not available, and will be truncated to dtype int32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+Step 0 | actor_loss=231.2523 | critic_loss=135.4186 | value_loss=22.0353 | v=0.4980 | q=-6.1184 | 0.0 steps/s
+Step 10000 | actor_loss=0.1510 | critic_loss=0.8907 | value_loss=0.1539 | v=20.6967 | q=20.7914 | 24.9 steps/s
+Step 20000 | actor_loss=0.0382 | critic_loss=1.0281 | value_loss=0.1348 | v=27.6605 | q=27.0980 | 47.8 steps/s
+Step 30000 | actor_loss=0.0322 | critic_loss=1.1156 | value_loss=0.1388 | v=27.6171 | q=27.5108 | 68.9 steps/s
+Step 40000 | actor_loss=0.0144 | critic_loss=0.6102 | value_loss=0.0723 | v=27.4982 | q=27.3751 | 88.5 steps/s
+Step 50000 | actor_loss=0.0108 | critic_loss=0.5051 | value_loss=0.0523 | v=25.6338 | q=25.5074 | 106.7 steps/s
+Step 60000 | actor_loss=0.0109 | critic_loss=0.2681 | value_loss=0.0378 | v=21.8620 | q=21.5991 | 123.6 steps/s
+Step 70000 | actor_loss=0.0091 | critic_loss=0.2814 | value_loss=0.0364 | v=24.0479 | q=23.8601 | 139.4 steps/s
+Step 80000 | actor_loss=0.0164 | critic_loss=0.1925 | value_loss=0.0332 | v=24.5830 | q=24.5221 | 154.2 steps/s
+Step 90000 | actor_loss=0.0093 | critic_loss=0.1825 | value_loss=0.0228 | v=23.0250 | q=22.8633 | 168.0 steps/s
+Step 100000 | actor_loss=0.0147 | critic_loss=0.2070 | value_loss=0.0261 | v=23.2243 | q=22.9639 | 181.0 steps/s
+  timestamp_micros=jnp.array(ts_micros_2d, dtype=jnp.int64),                                                                 | 0/1000 [00:00<?, ?it/s]
+ 40%|████████████████████████████████████████▋                                                              | 197661/500000 [54:17<1:23:02, 60.67it/s]
+Traceback (most recent call last):                                                                                                                    
+  Eval (N=64): return=0.00±0.00 | ep_len=80.0
+  Saved checkpoint to checkpoints/agent_step_100000
+Step 110000 | actor_loss=0.0046 | critic_loss=0.1498 | value_loss=0.0204 | v=23.1842 | q=23.1059 | 35.2 steps/s
+Step 120000 | actor_loss=0.0045 | critic_loss=0.1391 | value_loss=0.0130 | v=21.1851 | q=21.1184 | 38.2 steps/s
+Step 130000 | actor_loss=0.0044 | critic_loss=0.1903 | value_loss=0.0167 | v=22.1350 | q=21.9535 | 41.1 steps/s
+Step 140000 | actor_loss=0.0045 | critic_loss=0.1414 | value_loss=0.0156 | v=21.6934 | q=21.5697 | 44.1 steps/s
+Step 150000 | actor_loss=0.0017 | critic_loss=0.1302 | value_loss=0.0128 | v=21.6590 | q=21.5289 | 47.0 steps/s
+Step 160000 | actor_loss=0.0023 | critic_loss=0.3812 | value_loss=0.0302 | v=21.8622 | q=21.4669 | 49.8 steps/s
+Step 170000 | actor_loss=0.0035 | critic_loss=0.1284 | value_loss=0.0142 | v=21.3303 | q=21.2758 | 52.7 steps/s
+Step 180000 | actor_loss=0.0030 | critic_loss=0.1805 | value_loss=0.0132 | v=19.9820 | q=19.7646 | 55.5 steps/s
+Step 190000 | actor_loss=0.0029 | critic_loss=0.1815 | value_loss=0.0125 | v=22.2426 | q=21.9288 | 58.2 steps/s
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 325, in <module>
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 245, in main
+  File "<string>", line 1, in <lambda>
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 325, in <module>
+  File "/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/train_ddpm_idql_waymo.py", line 245, in main
+  File "<string>", line 1, in <lambda>
+KeyboardInterrupt

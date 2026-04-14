@@ -1,0 +1,6 @@
+{"time":"2026-04-14T01:03:05.006235409+05:30","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2026-04-14T01:03:05.968404595+05:30","level":"INFO","msg":"stream: created new stream","id":"3znetd91"}
+{"time":"2026-04-14T01:03:05.972959631+05:30","level":"INFO","msg":"stream: started","id":"3znetd91"}
+{"time":"2026-04-14T01:03:05.99375306+05:30","level":"INFO","msg":"handler: started","stream_id":"3znetd91"}
+{"time":"2026-04-14T01:03:06.002857853+05:30","level":"INFO","msg":"writer: started","stream_id":"3znetd91"}
+{"time":"2026-04-14T01:03:06.00403027+05:30","level":"INFO","msg":"sender: started","stream_id":"3znetd91"}
