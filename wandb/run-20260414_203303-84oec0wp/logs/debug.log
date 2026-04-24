@@ -1,0 +1,29 @@
+2026-04-14 20:33:03,406 INFO    MainThread:231081 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2026-04-14 20:33:03,407 INFO    MainThread:231081 [wandb_setup.py:_flush():80] Configure stats pid to 231081
+2026-04-14 20:33:03,407 INFO    MainThread:231081 [wandb_setup.py:_flush():80] Loading settings from /home/mech/btech/me1222006/.config/wandb/settings
+2026-04-14 20:33:03,407 INFO    MainThread:231081 [wandb_setup.py:_flush():80] Loading settings from /scratch/mech/btech/me1222006/projects/IDQL/wandb/settings
+2026-04-14 20:33:03,407 INFO    MainThread:231081 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2026-04-14 20:33:03,408 INFO    MainThread:231081 [wandb_init.py:setup_run_log_directory():713] Logging user logs to /scratch/mech/btech/me1222006/projects/IDQL/wandb/run-20260414_203303-84oec0wp/logs/debug.log
+2026-04-14 20:33:03,408 INFO    MainThread:231081 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to /scratch/mech/btech/me1222006/projects/IDQL/wandb/run-20260414_203303-84oec0wp/logs/debug-internal.log
+2026-04-14 20:33:03,409 INFO    MainThread:231081 [wandb_init.py:init():840] calling init triggers
+2026-04-14 20:33:03,409 INFO    MainThread:231081 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'_wandb': {}}
+2026-04-14 20:33:03,409 INFO    MainThread:231081 [wandb_init.py:init():888] starting backend
+2026-04-14 20:33:03,814 INFO    MainThread:231081 [wandb_init.py:init():891] sending inform_init request
+2026-04-14 20:33:03,847 INFO    MainThread:231081 [wandb_init.py:init():899] backend started and connected
+2026-04-14 20:33:03,858 INFO    MainThread:231081 [wandb_init.py:init():969] updated telemetry
+2026-04-14 20:33:03,975 INFO    MainThread:231081 [wandb_init.py:init():993] communicating run to backend with 90.0 second timeout
+2026-04-14 20:33:05,066 INFO    MainThread:231081 [wandb_init.py:init():1040] starting run threads in backend
+2026-04-14 20:33:05,646 INFO    MainThread:231081 [wandb_run.py:_console_start():2504] atexit reg
+2026-04-14 20:33:05,646 INFO    MainThread:231081 [wandb_run.py:_redirect():2352] redirect: wrap_raw
+2026-04-14 20:33:05,646 INFO    MainThread:231081 [wandb_run.py:_redirect():2421] Wrapping output streams.
+2026-04-14 20:33:05,646 INFO    MainThread:231081 [wandb_run.py:_redirect():2444] Redirects installed.
+2026-04-14 20:33:05,658 INFO    MainThread:231081 [wandb_init.py:init():1080] run started, returning control to user process
+2026-04-14 20:33:05,659 INFO    MainThread:231081 [wandb_run.py:_config_callback():1385] config_cb None None {'dataset_path': '/home/mech/btech/me1222006/scratch/data/waymax_expert/waymo_train_10k.npz', 'eval_data_dir': '/home/mech/btech/me1222006/scratch/data/raw/validation', 'eval_num_scenarios': 5, 'eval_start_scenario': 0, 'seed': 0, 'max_steps': 1000000, 'batch_size': 512, 'eval_episodes': 5, 'log_interval': 1000, 'eval_interval': 100000, 'save_interval': 100000, 'normalize_returns': False, 'no_normalize_returns': False, 'project': 'idql_waymo', 'experiment_name': 'ddpm_iql_waymax_302d', 'save_dir': 'checkpoints', 'no_wandb': False, 'eval_gif_dir': '/home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs', 'eval_gif_stride': 2, 'actor_lr': 0.0003, 'critic_lr': 0.0003, 'value_lr': 0.0003, 'T': 5, 'N': 64, 'M': 0, 'critic_hyperparam': 0.9, 'actor_dropout_rate': 0.1, 'actor_num_blocks': 3, 'actor_tau': 0.001, 'beta_schedule': 'vp'}
+2026-04-14 20:33:05,661 INFO    MainThread:231081 [wandb_run.py:_config_callback():1385] config_cb None None {'actor_lr': 0.0003, 'critic_lr': 0.0003, 'value_lr': 0.0003, 'T': 5, 'N': 64, 'M': 0, 'actor_dropout_rate': 0.1, 'actor_num_blocks': 3, 'decay_steps': 1000000, 'actor_layer_norm': True, 'value_layer_norm': True, 'actor_tau': 0.001, 'beta_schedule': 'vp', 'critic_hyperparam': 0.9}
+2026-04-14 20:33:05,661 INFO    MainThread:231081 [wandb_run.py:_config_callback():1385] config_cb None None {'jax_default_backend': 'gpu', 'jax_devices_repr': '[CudaDevice(id=0)]'}
+2026-04-14 22:07:15,056 INFO    MainThread:231081 [wandb_run.py:_finish():2270] finishing run BTP2/idql_waymo/84oec0wp
+2026-04-14 22:07:15,164 INFO    MainThread:231081 [wandb_run.py:_atexit_cleanup():2469] got exitcode: 0
+2026-04-14 22:07:15,167 INFO    MainThread:231081 [wandb_run.py:_restore():2451] restore
+2026-04-14 22:07:15,167 INFO    MainThread:231081 [wandb_run.py:_restore():2457] restore done
+2026-04-14 22:07:18,051 INFO    MainThread:231081 [wandb_run.py:_footer_sync_info():3853] logging synced files

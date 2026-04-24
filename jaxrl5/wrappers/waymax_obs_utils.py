@@ -166,7 +166,7 @@ def state_to_feature_dict(
         if idx == sdc_idx or not all_valid[idx]:
             continue
         rel_pos = rot @ (np.array([all_x[idx], all_y[idx]]) - ego_pos)
-        rel_vel = rot @ np.array([all_vx[idx] - vx, all_vy[idx] - vy])
+        rel_vel = rot @ np.array([all_vx[idx], all_vy[idx]])
         rel_heading = normalize_angle(all_yaw[idx] - ego_heading)
 
         type_vec = np.zeros(3, dtype=np.float32)

@@ -81,8 +81,12 @@ def warmup_waymax_eval_jit(eval_env, agent, denormalize_fn):
     return agent
 
 
-def record_eval_rollout_gif(agent, eval_env, gif_path, denormalize_fn, frame_stride=2, max_steps=80):
+def record_eval_rollout_gif(agent, eval_env, gif_path, denormalize_fn,
+                            snapshot=None, frame_stride=2, max_steps=80):
     """Save one rollout as GIF using Waymax matplotlib viz (headless-safe).
+
+    If *snapshot* is provided, resets to that fixed scenario (does not advance
+    the eval generator).  Otherwise falls back to ``eval_env.reset()``.
 
     Returns ``(agent, True)`` if a GIF was written, ``(agent, False)`` if imports
     or rendering failed (training should continue). ``agent`` is always the
@@ -106,7 +110,10 @@ def record_eval_rollout_gif(agent, eval_env, gif_path, denormalize_fn, frame_str
     try:
         base = eval_env.unwrapped
         frames = []
-        obs = eval_env.reset()
+        if snapshot is not None:
+            obs = base.reset_to_snapshot(snapshot)
+        else:
+            obs = eval_env.reset()
         for t in range(max_steps):
             state = jax.device_get(base._state)
             if t % frame_stride == 0:
@@ -163,11 +170,11 @@ def load_waymo_dataset(path, do_normalize_actions=True):
 
 
 def evaluate_waymax(agent, env, num_episodes):
-    """Evaluate the IDQL agent in Waymax; aggregate returns, lengths, Waymax metrics, offline KPIs.
+    """Evaluate the IDQL agent in Waymax using WaymoOfflineRL metrics.
 
-    Also records wall time in coarse sections (perf_counter): reset, policy forward,
-    env.step (includes denormalize + Waymax step + featurization in the wrapper),
-    and collect_episode_eval_stats. Use these to see where eval time goes.
+    Logged metrics (matching WaymoOfflineRL stage_4_evaluation):
+      - success_rate, collision_rate, off_road_rate, goal_completion_rate  (pct)
+      - return_mean/std, episode_length_mean/std
     """
     all_returns = []
     all_lengths = []
@@ -176,31 +183,16 @@ def evaluate_waymax(agent, env, num_episodes):
     base = env.unwrapped
     t_eval0 = time.time()
 
-    t_reset_total = 0.0
-    t_policy_total = 0.0
-    t_step_total = 0.0
-    t_collect_total = 0.0
-    n_env_steps = 0
-
     for ep in tqdm(range(num_episodes), desc="Eval", leave=False):
-        t0 = time.perf_counter()
         obs = env.reset()
-        t_reset_total += time.perf_counter() - t0
         done = False
         ep_reward = 0.0
         ep_length = 0
 
         while not done and ep_length < 80:
-            t0 = time.perf_counter()
             norm_action, agent = agent.eval_actions(obs)
-            t_policy_total += time.perf_counter() - t0
-
-            t0 = time.perf_counter()
             raw_action = denormalize_action(norm_action)
             obs, reward, done, info = env.step(raw_action)
-            t_step_total += time.perf_counter() - t0
-            n_env_steps += 1
-
             ep_reward += reward
             ep_length += 1
 
@@ -208,61 +200,29 @@ def evaluate_waymax(agent, env, num_episodes):
         all_lengths.append(ep_length)
 
         if hasattr(base, "collect_episode_eval_stats"):
-            t0 = time.perf_counter()
             episode_stat_dicts.append(base.collect_episode_eval_stats())
-            t_collect_total += time.perf_counter() - t0
 
     eval_elapsed_s = time.time() - t_eval0
-    accounted_s = t_reset_total + t_policy_total + t_step_total + t_collect_total
 
     out = {
         "return_mean": float(np.mean(all_returns)),
         "return_std": float(np.std(all_returns)),
         "episode_length_mean": float(np.mean(all_lengths)),
         "episode_length_std": float(np.std(all_lengths)),
-        "num_episodes": int(num_episodes),
         "eval_wall_time_s": float(eval_elapsed_s),
-        "eval_profile_reset_s": float(t_reset_total),
-        "eval_profile_policy_s": float(t_policy_total),
-        "eval_profile_env_step_s": float(t_step_total),
-        "eval_profile_collect_stats_s": float(t_collect_total),
-        "eval_profile_n_env_steps": int(n_env_steps),
-        "eval_profile_accounted_s": float(accounted_s),
-        "eval_profile_unaccounted_s": float(max(0.0, eval_elapsed_s - accounted_s)),
     }
-    if n_env_steps > 0:
-        out["eval_profile_policy_ms_per_env_step"] = float(
-            1000.0 * t_policy_total / n_env_steps
-        )
-        out["eval_profile_env_step_ms_per_env_step"] = float(
-            1000.0 * t_step_total / n_env_steps
-        )
-    if num_episodes > 0:
-        out["eval_profile_reset_ms_per_episode"] = float(
-            1000.0 * t_reset_total / num_episodes
-        )
-        out["eval_profile_collect_stats_ms_per_episode"] = float(
-            1000.0 * t_collect_total / num_episodes
-        )
 
     if episode_stat_dicts:
-        keys = set()
-        for d in episode_stat_dicts:
-            keys.update(d.keys())
-        for k in sorted(keys):
-            vals = [float(d[k]) for d in episode_stat_dicts if k in d and np.isfinite(d[k])]
-            if not vals:
-                continue
-            out[f"{k}_mean"] = float(np.mean(vals))
-            out[f"{k}_std"] = float(np.std(vals))
-        if "success_mean" in out:
-            out["success_rate_pct"] = float(100.0 * out["success_mean"])
-        if "collision_mean" in out:
-            out["collision_rate_pct"] = float(100.0 * out["collision_mean"])
-        if "off_road_mean" in out:
-            out["off_road_rate_pct"] = float(100.0 * out["off_road_mean"])
-        if "goal_completed_mean" in out:
-            out["goal_completion_rate_pct"] = float(100.0 * out["goal_completed_mean"])
+        n = len(episode_stat_dicts)
+        collisions = sum(d.get("collision", 0) for d in episode_stat_dicts)
+        off_roads = sum(d.get("off_road", 0) for d in episode_stat_dicts)
+        goals = sum(d.get("goal_completed", 0) for d in episode_stat_dicts)
+        successes = sum(d.get("success", 0) for d in episode_stat_dicts)
+
+        out["collision_rate"] = 100.0 * collisions / n
+        out["off_road_rate"] = 100.0 * off_roads / n
+        out["goal_completion_rate"] = 100.0 * goals / n
+        out["success_rate"] = 100.0 * successes / n
 
     return out
 
@@ -349,8 +309,7 @@ def main():
         print(f"  Reward range after normalize: "
               f"[{ds.dataset_dict['rewards'].min():.4f}, {ds.dataset_dict['rewards'].max():.4f}]")
 
-    ds, ds_val = ds.split(0.95)
-    print(f"Train: {len(ds)} transitions, Val: {len(ds_val)} transitions")
+    print(f"Train: {len(ds)} transitions (no held-out transition split; Waymax eval is separate if configured).")
 
     # --- Create eval environment ---
     eval_env = None
@@ -415,12 +374,32 @@ def main():
         agent = warmup_waymax_eval_jit(eval_env, agent, denormalize_action)
         print(f"  Warmup done in {time.perf_counter() - t_w:.1f}s", flush=True)
 
+    gif_snapshot = None
     if args.eval_gif_dir:
+        # os.makedirs(args.eval_gif_dir, exist_ok=True)
+        # if eval_env is not None:
+            # eval_env.reset()
+            # gif_snapshot = eval_env.unwrapped.snapshot_scenario()
+            # print(f"  GIF scenario pinned: {gif_snapshot[0]}", flush=True)
         os.makedirs(args.eval_gif_dir, exist_ok=True)
+        if args.eval_data_dir is not None:
+            # Pin the GIF scenario to index args.seed using a throwaway env, so
+            # different seeds render different scenarios and the main eval_env
+            # iterator is not consumed.
+                gif_env = WaymaxGymWrapper(
+                    tfrecord_dir=args.eval_data_dir,
+                    max_scenarios=1,
+                    start_scenario=args.seed,
+                )
+                gif_env.reset()
+                gif_snapshot = gif_env.snapshot_scenario()
+                print(f"  GIF scenario pinned: {gif_snapshot[0]} (seed={args.seed})", flush=True)
+                gif_env.close()
+            
 
     # --- W&B ---
     if not args.no_wandb:
-        wandb.init(project=args.project, name=args.experiment_name)
+        wandb.init(project=args.project, name=args.experiment_name, settings=wandb.Settings(init_timeout=300),)
         wandb.config.update(vars(args))
         wandb.config.update(rl_config)
         wandb.config.update({
@@ -442,15 +421,10 @@ def main():
         agent, info = agent.update(sample)
 
         if i % args.log_interval == 0:
-            val_sample = ds_val.sample(args.batch_size, keys=None)
-            _, val_info = agent.update(val_sample)
-
             info = jax.device_get(info)
-            val_info = jax.device_get(val_info)
 
             if not args.no_wandb:
                 wandb.log({f"train/{k}": float(v) for k, v in info.items()}, step=i)
-                wandb.log({f"val/{k}": float(v) for k, v in val_info.items()}, step=i)
 
             if i % (args.log_interval * 10) == 0:
                 elapsed = time.time() - t_start
@@ -470,53 +444,26 @@ def main():
             eval_info = evaluate_waymax(agent, eval_env, args.eval_episodes)
 
             if not args.no_wandb:
-                eval_log = {}
-                for k, v in eval_info.items():
-                    try:
-                        x = float(v)
-                        if np.isfinite(x):
-                            eval_log[f"eval/{k}"] = x
-                    except (TypeError, ValueError):
-                        pass
+                eval_log = {f"eval/{k}": float(v) for k, v in eval_info.items()
+                            if k != "eval_wall_time_s" and np.isfinite(float(v))}
                 wandb.log(eval_log, step=i)
 
-            extra = " ".join(
-                f"{k}={eval_info[k]:.4f}"
-                for k in sorted(eval_info)
-                if k.startswith("waymax_") and k.endswith("_mean")
-            )
             kpi = " ".join(
-                f"{k.replace('_rate_pct', '')}={eval_info[k]:.2f}%"
+                f"{k}={eval_info[k]:.2f}%"
                 for k in (
-                    "success_rate_pct",
-                    "collision_rate_pct",
-                    "off_road_rate_pct",
-                    "goal_completion_rate_pct",
+                    "success_rate",
+                    "collision_rate",
+                    "off_road_rate",
+                    "goal_completion_rate",
                 )
                 if k in eval_info
-            )
-            wall = float(eval_info.get("eval_wall_time_s", 0.0))
-            pol = float(eval_info.get("eval_profile_policy_s", 0.0))
-            stp = float(eval_info.get("eval_profile_env_step_s", 0.0))
-            rst = float(eval_info.get("eval_profile_reset_s", 0.0))
-            col = float(eval_info.get("eval_profile_collect_stats_s", 0.0))
-            unacc = float(eval_info.get("eval_profile_unaccounted_s", 0.0))
-            pol_ms = float(eval_info.get("eval_profile_policy_ms_per_env_step", 0.0))
-            stp_ms = float(eval_info.get("eval_profile_env_step_ms_per_env_step", 0.0))
-            pct = lambda x: (100.0 * x / wall) if wall > 0 else 0.0
-            profile_str = (
-                f"profile wall={wall:.1f}s "
-                f"(policy {pct(pol):.0f}% {pol_ms:.1f}ms/step | "
-                f"env_step {pct(stp):.0f}% {stp_ms:.1f}ms/step | "
-                f"reset {pct(rst):.0f}% | collect {pct(col):.0f}% | "
-                f"unaccounted {pct(unacc):.0f}%)"
             )
             print(
                 f"  Eval (N={args.N}): "
                 f"return={eval_info['return_mean']:.3f}±{eval_info['return_std']:.3f} | "
                 f"ep_len={eval_info['episode_length_mean']:.1f} | "
-                f"{profile_str} | "
-                f"{extra} | {kpi}",
+                f"{kpi} | "
+                f"wall={eval_info.get('eval_wall_time_s', 0):.1f}s",
                 flush=True,
             )
 
@@ -527,6 +474,7 @@ def main():
                     eval_env,
                     gif_path,
                     denormalize_action,
+                    snapshot=gif_snapshot,
                     frame_stride=args.eval_gif_stride,
                 )
                 if gif_ok:
@@ -549,6 +497,43 @@ def main():
                 value=value_params,
             )
             print(f"  Saved checkpoint to {ckpt_path}")
+
+    # --- Final eval ---
+    if eval_env is not None:
+        agent = agent.replace(N=args.N, clip_sampler=True, M=0)
+        eval_info = evaluate_waymax(agent, eval_env, args.eval_episodes)
+
+        if not args.no_wandb:
+            eval_log = {f"eval/{k}": float(v) for k, v in eval_info.items()
+                        if k != "eval_wall_time_s" and np.isfinite(float(v))}
+            wandb.log(eval_log, step=args.max_steps)
+
+        kpi = " ".join(
+            f"{k}={eval_info[k]:.2f}%"
+            for k in ("success_rate", "collision_rate", "off_road_rate", "goal_completion_rate")
+            if k in eval_info
+        )
+        print(
+            f"  Final Eval (N={args.N}): "
+            f"return={eval_info['return_mean']:.3f}±{eval_info['return_std']:.3f} | "
+            f"ep_len={eval_info['episode_length_mean']:.1f} | "
+            f"{kpi} | "
+            f"wall={eval_info.get('eval_wall_time_s', 0):.1f}s",
+            flush=True,
+        )
+
+        if args.eval_gif_dir:
+            gif_path = os.path.join(args.eval_gif_dir, f"eval_step_final.gif")
+            agent, gif_ok = record_eval_rollout_gif(
+                agent, eval_env, gif_path, denormalize_action,
+                snapshot=gif_snapshot, frame_stride=args.eval_gif_stride,
+            )
+            if gif_ok:
+                print(f"  Eval GIF saved: {gif_path}", flush=True)
+                if not args.no_wandb:
+                    wandb.log({"eval/rollout_gif_path": gif_path}, step=args.max_steps)
+
+        agent = agent.replace(**training_time_inference_params)
 
     # --- Final save ---
     ckpt_path = os.path.join(args.save_dir, "agent_final")

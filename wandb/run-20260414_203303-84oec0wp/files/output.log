@@ -1,0 +1,136 @@
+
+Starting training for 1000000 steps ...
+ 10%|▉         | 99993/1000000 [15:17<1:16:/home/mech/btech/me1222006/scratch/projects/IDQL/jaxrl5/wrappers/../../launcher/examples/scenario_to_waymax.py:242: UserWarning: Explicitly requested dtype <class 'jax.numpy.int64'> requested in array is not available, and will be truncated to dtype int32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+Step 0 | actor_loss=188.7350 | critic_loss=105.2029 | value_loss=16.8489 | v=0.4570 | q=-5.7728 | 0.0 steps/s
+Step 10000 | actor_loss=0.1706 | critic_loss=1.0416 | value_loss=0.1163 | v=21.2113 | q=21.1218 | 21.8 steps/s
+Step 20000 | actor_loss=0.0436 | critic_loss=1.7034 | value_loss=0.1428 | v=29.6794 | q=29.6145 | 39.3 steps/s
+Step 30000 | actor_loss=0.0288 | critic_loss=0.8834 | value_loss=0.1045 | v=28.9138 | q=28.3353 | 53.6 steps/s
+Step 40000 | actor_loss=0.0175 | critic_loss=1.2713 | value_loss=0.0636 | v=25.1282 | q=25.4608 | 65.4 steps/s
+Step 50000 | actor_loss=0.0234 | critic_loss=0.3152 | value_loss=0.0450 | v=24.5720 | q=24.3011 | 75.5 steps/s
+Step 60000 | actor_loss=0.0134 | critic_loss=0.3409 | value_loss=0.0484 | v=22.3321 | q=22.0706 | 84.2 steps/s
+Step 70000 | actor_loss=0.0091 | critic_loss=0.2631 | value_loss=0.0191 | v=22.0282 | q=21.8070 | 91.6 steps/s
+Step 80000 | actor_loss=0.0074 | critic_loss=0.2430 | value_loss=0.0324 | v=24.6475 | q=24.4251 | 98.1 steps/s
+Step 90000 | actor_loss=0.0057 | critic_loss=0.3762 | value_loss=0.0210 | v=22.5560 | q=22.3416 | 103.8 steps/s
+Step 100000 | actor_loss=0.0069 | critic_loss=0.4002 | value_loss=0.0284 | v=22.3185 | q=22.0365 | 108.9 steps/s
+  timestamp_micros=jnp.array(ts_micros_2d, dtype=jnp.int64),
+ 32%|███▏      | 319982/1000000 [37:03<58:10, 194.80it/s]   
+                                                   
+  Eval (N=64): return=-39.807±41.280 | ep_len=80.0 | profile wall=139.2s (policy 1% 4.2ms/step | env_step 6% 22.4ms/step | reset 33% | collect 59% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=130.8898 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0000 | success=40.00% collision=40.00% off_road=0.00% goal_completion=40.00%
+  Eval GIF saved: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs/eval_step_100000.gif
+  Saved checkpoint to checkpoints/agent_step_100000
+Step 110000 | actor_loss=0.0036 | critic_loss=0.3617 | value_loss=0.0358 | v=22.7818 | q=23.0048 | 98.6 steps/s
+Step 120000 | actor_loss=0.0034 | critic_loss=0.4381 | value_loss=0.0421 | v=24.0732 | q=23.7273 | 104.0 steps/s
+Step 130000 | actor_loss=0.0035 | critic_loss=0.4184 | value_loss=0.0406 | v=24.9783 | q=24.9369 | 109.0 steps/s
+Step 140000 | actor_loss=0.0039 | critic_loss=0.8654 | value_loss=0.1236 | v=24.3578 | q=24.0486 | 113.5 steps/s
+Step 150000 | actor_loss=0.0025 | critic_loss=1.1435 | value_loss=0.1148 | v=28.0569 | q=27.7159 | 117.8 steps/s
+Step 160000 | actor_loss=0.0033 | critic_loss=5.1944 | value_loss=1.2163 | v=30.6038 | q=30.5019 | 121.3 steps/s
+Step 170000 | actor_loss=0.0037 | critic_loss=4.2235 | value_loss=0.2936 | v=30.8816 | q=30.0953 | 125.2 steps/s
+Step 180000 | actor_loss=0.0031 | critic_loss=10.5290 | value_loss=1.6960 | v=38.9812 | q=38.2731 | 128.9 steps/s
+Step 190000 | actor_loss=0.0036 | critic_loss=30.7698 | value_loss=2.1027 | v=45.6154 | q=44.7904 | 132.3 steps/s
+Step 200000 | actor_loss=0.0027 | critic_loss=26.6188 | value_loss=3.9854 | v=47.0198 | q=47.9422 | 135.6 steps/s
+  Eval (N=64): return=-38.889±40.206 | ep_len=80.0 | profile wall=57.1s (policy 2% 3.4ms/step | env_step 11% 16.3ms/step | reset 82% | collect 4% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=20.9787 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.2000 | success=40.00% collision=40.00% off_road=0.00% goal_completion=40.00%
+  Eval GIF saved: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs/eval_step_200000.gif
+  Saved checkpoint to checkpoints/agent_step_200000
+Step 210000 | actor_loss=0.0015 | critic_loss=80.5117 | value_loss=3.5594 | v=56.5504 | q=53.9232 | 131.7 steps/s
+Step 220000 | actor_loss=0.0022 | critic_loss=67.6956 | value_loss=49.4974 | v=68.3837 | q=67.4103 | 134.8 steps/s
+Step 230000 | actor_loss=0.0020 | critic_loss=85.4417 | value_loss=11.9345 | v=68.5137 | q=66.0173 | 137.3 steps/s
+Step 240000 | actor_loss=0.0072 | critic_loss=110.9804 | value_loss=41.7038 | v=87.9336 | q=85.3022 | 139.3 steps/s
+Step 250000 | actor_loss=0.0057 | critic_loss=216.2694 | value_loss=21.3922 | v=93.4705 | q=93.7626 | 141.2 steps/s
+Step 260000 | actor_loss=0.0012 | critic_loss=112.7624 | value_loss=7.9887 | v=85.4560 | q=83.3129 | 142.8 steps/s
+Step 270000 | actor_loss=0.0014 | critic_loss=142.7274 | value_loss=26.1342 | v=101.8945 | q=100.7982 | 144.2 steps/s
+Step 280000 | actor_loss=0.0023 | critic_loss=210.0619 | value_loss=24.5458 | v=115.8460 | q=112.5219 | 145.6 steps/s
+Step 290000 | actor_loss=0.0016 | critic_loss=210.0757 | value_loss=22.1906 | v=121.3364 | q=116.5843 | 146.8 steps/s
+Step 300000 | actor_loss=0.0019 | critic_loss=171.2567 | value_loss=44.8119 | v=130.1549 | q=124.8187 | 148.0 steps/s
+  Eval (N=64): return=-32.241±38.625 | ep_len=80.0 | profile wall=70.9s (policy 2% 4.4ms/step | env_step 10% 18.4ms/step | reset 84% | collect 3% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=34.4557 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0000 | success=40.00% collision=20.00% off_road=0.00% goal_completion=40.00%
+  Eval GIF saved: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs/eval_step_300000.gif
+  Saved checkpoint to checkpoints/agent_step_300000
+Step 310000 | actor_loss=0.0009 | critic_loss=646.6498 | value_loss=117.2956 | v=180.6638 | q=174.7722 | 142.7 steps/s
+Step 320000 | actor_loss=0.0015 | critic_loss=400.5031 | value_loss=57.8368 | v=153.4492 | q=147.1057 | 143.9 steps/s
+Step 330000 | actor_loss=0.0020 | critic_loss=323.6085 | value_loss=39.3872 | v=162.8478 | q=157.0329 | 145.1 steps/s
+Step 340000 | actor_loss=0.0008 | critic_loss=731.4330 | value_loss=81.1710 | v=173.9897 | q=169.2853 | 146.3 steps/s
+Step 350000 | actor_loss=0.0019 | critic_loss=613.8029 | value_loss=91.9520 | v=200.4144 | q=194.3117 | 147.7 steps/s
+Step 360000 | actor_loss=0.0012 | critic_loss=1125.1768 | value_loss=85.3873 | v=193.1358 | q=180.6892 | 149.1 steps/s
+Step 370000 | actor_loss=0.0014 | critic_loss=682.3901 | value_loss=96.9035 | v=179.6579 | q=184.2500 | 150.5 steps/s
+Step 380000 | actor_loss=0.0011 | critic_loss=2309.4507 | value_loss=388.0793 | v=241.7802 | q=237.0806 | 152.0 steps/s
+Step 390000 | actor_loss=0.0009 | critic_loss=1097.2860 | value_loss=298.7844 | v=267.4762 | q=261.0654 | 153.2 steps/s
+Step 400000 | actor_loss=0.0057 | critic_loss=1515.7129 | value_loss=124.7283 | v=269.5159 | q=262.6567 | 154.2 steps/s
+  Eval (N=64): return=-32.151±36.374 | ep_len=80.0 | profile wall=16.4s (policy 10% 4.1ms/step | env_step 44% 17.8ms/step | reset 32% | collect 14% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=118.0722 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0000 | success=40.00% collision=20.00% off_road=0.00% goal_completion=40.00%
+  Eval GIF saved: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs/eval_step_400000.gif
+  Saved checkpoint to checkpoints/agent_step_400000
+Step 410000 | actor_loss=0.0031 | critic_loss=2095.9180 | value_loss=219.8913 | v=311.6274 | q=313.7338 | 153.4 steps/s
+Step 420000 | actor_loss=0.0012 | critic_loss=1211.2634 | value_loss=534.4034 | v=312.2297 | q=306.8048 | 154.4 steps/s
+Step 430000 | actor_loss=0.0007 | critic_loss=3056.9604 | value_loss=278.4630 | v=311.3538 | q=306.6165 | 155.4 steps/s
+Step 440000 | actor_loss=0.0065 | critic_loss=1953.0826 | value_loss=194.6665 | v=291.2071 | q=291.3958 | 156.4 steps/s
+Step 450000 | actor_loss=0.0022 | critic_loss=1941.3281 | value_loss=360.3713 | v=366.2778 | q=352.1699 | 157.3 steps/s
+Step 460000 | actor_loss=0.0019 | critic_loss=1439.2478 | value_loss=232.9445 | v=322.4984 | q=309.2307 | 158.1 steps/s
+Step 470000 | actor_loss=0.0009 | critic_loss=3349.0947 | value_loss=389.5698 | v=412.7142 | q=409.5226 | 159.0 steps/s
+Step 480000 | actor_loss=0.0077 | critic_loss=2484.9719 | value_loss=472.4820 | v=417.2327 | q=402.6252 | 159.8 steps/s
+Step 490000 | actor_loss=0.0006 | critic_loss=4495.5776 | value_loss=948.9589 | v=465.8231 | q=456.2499 | 160.8 steps/s
+Step 500000 | actor_loss=0.0030 | critic_loss=3805.1870 | value_loss=1306.5873 | v=457.5822 | q=436.6915 | 161.8 steps/s
+  Eval (N=64): return=-23.464±31.452 | ep_len=80.0 | profile wall=24.4s (policy 7% 4.0ms/step | env_step 28% 17.3ms/step | reset 56% | collect 9% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=109.4425 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0000 | success=40.00% collision=20.00% off_road=0.00% goal_completion=40.00%
+  Eval GIF saved: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs/eval_step_500000.gif
+  Saved checkpoint to checkpoints/agent_step_500000
+Step 510000 | actor_loss=0.0013 | critic_loss=2838.7446 | value_loss=601.9373 | v=411.3208 | q=413.3334 | 160.7 steps/s
+Step 520000 | actor_loss=0.0013 | critic_loss=5017.6479 | value_loss=1055.8075 | v=489.5406 | q=458.9422 | 161.6 steps/s
+Step 530000 | actor_loss=0.0067 | critic_loss=6740.5957 | value_loss=1023.5266 | v=456.0598 | q=456.5891 | 162.5 steps/s
+Step 540000 | actor_loss=0.0019 | critic_loss=11501.4443 | value_loss=1284.3765 | v=651.6271 | q=609.8798 | 163.4 steps/s
+Step 550000 | actor_loss=0.0008 | critic_loss=4345.1157 | value_loss=1195.5573 | v=572.7166 | q=554.9768 | 164.3 steps/s
+Step 560000 | actor_loss=0.0009 | critic_loss=9654.9727 | value_loss=2641.9934 | v=631.0538 | q=611.2294 | 165.1 steps/s
+Step 570000 | actor_loss=0.0013 | critic_loss=4404.5225 | value_loss=673.4968 | v=644.5500 | q=632.8306 | 165.9 steps/s
+Step 580000 | actor_loss=0.0009 | critic_loss=8293.6777 | value_loss=1812.3118 | v=772.3346 | q=765.1832 | 166.7 steps/s
+Step 590000 | actor_loss=0.0010 | critic_loss=5923.2563 | value_loss=1136.5132 | v=616.8284 | q=606.6038 | 167.5 steps/s
+Step 600000 | actor_loss=0.0015 | critic_loss=7156.3096 | value_loss=1788.2906 | v=640.7685 | q=618.2187 | 168.3 steps/s
+  Eval (N=64): return=-23.606±30.186 | ep_len=80.0 | profile wall=52.5s (policy 3% 4.0ms/step | env_step 13% 17.4ms/step | reset 79% | collect 4% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=100.8300 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0000 | success=40.00% collision=40.00% off_road=0.00% goal_completion=40.00%
+  Eval GIF saved: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs/eval_step_600000.gif
+  Saved checkpoint to checkpoints/agent_step_600000
+Step 610000 | actor_loss=0.0009 | critic_loss=5098.1396 | value_loss=1087.0918 | v=620.8363 | q=604.1356 | 166.2 steps/s
+Step 620000 | actor_loss=0.0006 | critic_loss=11854.4141 | value_loss=2270.0042 | v=718.1807 | q=712.5626 | 167.0 steps/s
+Step 630000 | actor_loss=0.0011 | critic_loss=9519.6807 | value_loss=1501.2502 | v=742.1858 | q=715.7229 | 167.6 steps/s
+Step 640000 | actor_loss=0.0046 | critic_loss=9365.1865 | value_loss=1646.8523 | v=732.5393 | q=730.7485 | 168.4 steps/s
+Step 650000 | actor_loss=0.0035 | critic_loss=12251.1152 | value_loss=1273.2368 | v=971.0562 | q=948.2099 | 169.2 steps/s
+Step 660000 | actor_loss=0.0011 | critic_loss=10891.0918 | value_loss=3691.7134 | v=861.7538 | q=841.1414 | 169.9 steps/s
+Step 670000 | actor_loss=0.0010 | critic_loss=10635.9727 | value_loss=1602.3030 | v=819.8714 | q=813.0563 | 170.6 steps/s
+Step 680000 | actor_loss=0.0006 | critic_loss=15185.6875 | value_loss=3108.8079 | v=966.9229 | q=944.0796 | 171.1 steps/s
+Step 690000 | actor_loss=0.0004 | critic_loss=13589.8555 | value_loss=2247.1650 | v=842.4124 | q=808.9200 | 171.7 steps/s
+Step 700000 | actor_loss=0.0032 | critic_loss=12666.6387 | value_loss=3575.4822 | v=976.3356 | q=931.3347 | 172.2 steps/s
+  Eval (N=64): return=-18.962±27.125 | ep_len=80.0 | profile wall=71.9s (policy 2% 4.2ms/step | env_step 51% 91.6ms/step | reset 43% | collect 4% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=106.3398 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0000 | success=40.00% collision=20.00% off_road=0.00% goal_completion=40.00%
+  Eval GIF saved: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs/eval_step_700000.gif
+  Saved checkpoint to checkpoints/agent_step_700000
+Step 710000 | actor_loss=0.0031 | critic_loss=17331.5859 | value_loss=2923.8613 | v=879.2770 | q=863.2009 | 169.1 steps/s
+Step 720000 | actor_loss=0.0014 | critic_loss=20859.1973 | value_loss=2829.6665 | v=996.2885 | q=997.4929 | 169.7 steps/s
+Step 730000 | actor_loss=0.0008 | critic_loss=20326.2461 | value_loss=2561.9187 | v=911.3399 | q=888.4735 | 170.2 steps/s
+Step 740000 | actor_loss=0.0006 | critic_loss=25835.9277 | value_loss=5014.6567 | v=1161.1528 | q=1135.5957 | 170.7 steps/s
+Step 750000 | actor_loss=0.0026 | critic_loss=23763.1641 | value_loss=5557.4331 | v=1224.1960 | q=1170.8049 | 171.2 steps/s
+Step 760000 | actor_loss=0.0003 | critic_loss=21930.1445 | value_loss=3119.2866 | v=957.6294 | q=948.0088 | 171.7 steps/s
+Step 770000 | actor_loss=0.0014 | critic_loss=23562.8633 | value_loss=5208.9302 | v=1138.1135 | q=1079.0194 | 172.2 steps/s
+Step 780000 | actor_loss=0.0005 | critic_loss=21546.4512 | value_loss=4505.0552 | v=1241.0577 | q=1232.3484 | 172.7 steps/s
+Step 790000 | actor_loss=0.0006 | critic_loss=32173.9297 | value_loss=5024.8379 | v=1137.4448 | q=1152.3615 | 173.2 steps/s
+Step 800000 | actor_loss=0.0005 | critic_loss=19679.8320 | value_loss=5849.1699 | v=1282.2202 | q=1224.5117 | 173.6 steps/s
+  Eval (N=64): return=-15.293±24.836 | ep_len=80.0 | profile wall=29.1s (policy 6% 4.1ms/step | env_step 25% 17.9ms/step | reset 61% | collect 8% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=86.4007 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0000 | success=40.00% collision=40.00% off_road=0.00% goal_completion=40.00%
+  Eval GIF saved: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs/eval_step_800000.gif
+  Saved checkpoint to checkpoints/agent_step_800000
+Step 810000 | actor_loss=0.0012 | critic_loss=377595.6875 | value_loss=84770.8438 | v=1858.0557 | q=1716.1425 | 172.3 steps/s
+Step 820000 | actor_loss=0.0006 | critic_loss=28570.5547 | value_loss=5448.1270 | v=1198.5220 | q=1156.7327 | 172.8 steps/s
+Step 830000 | actor_loss=0.0060 | critic_loss=41430.6016 | value_loss=10772.5732 | v=1459.0184 | q=1380.8733 | 173.2 steps/s
+Step 840000 | actor_loss=0.0016 | critic_loss=39029.3047 | value_loss=8108.6484 | v=1430.9819 | q=1367.3785 | 173.7 steps/s
+Step 850000 | actor_loss=0.0013 | critic_loss=27589.2930 | value_loss=6983.8594 | v=1506.7122 | q=1472.7035 | 174.1 steps/s
+Step 860000 | actor_loss=0.0005 | critic_loss=72614.5469 | value_loss=9147.5928 | v=1580.6873 | q=1507.6025 | 174.5 steps/s
+Step 870000 | actor_loss=0.0015 | critic_loss=40962.8984 | value_loss=8784.2559 | v=1605.5518 | q=1590.7150 | 174.9 steps/s
+Step 880000 | actor_loss=0.0048 | critic_loss=42171.5430 | value_loss=14410.4941 | v=1654.7629 | q=1616.1116 | 175.3 steps/s
+Step 890000 | actor_loss=0.0004 | critic_loss=64006.6641 | value_loss=15436.7363 | v=1854.9589 | q=1833.1007 | 175.7 steps/s
+Step 900000 | actor_loss=0.0006 | critic_loss=48952.6172 | value_loss=11136.1172 | v=2182.4238 | q=2126.0566 | 176.1 steps/s
+  Eval (N=64): return=-16.503±25.238 | ep_len=80.0 | profile wall=38.5s (policy 4% 4.1ms/step | env_step 19% 18.0ms/step | reset 71% | collect 6% | unaccounted 0%) | waymax_kinematic_infeasibility_mean=0.0000 waymax_log_divergence_mean=92.6217 waymax_offroad_mean=0.0000 waymax_overlap_mean=0.0000 | success=40.00% collision=20.00% off_road=0.00% goal_completion=40.00%
+  Eval GIF saved: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs/eval_step_900000.gif
+  Saved checkpoint to checkpoints/agent_step_900000
+Step 910000 | actor_loss=0.0017 | critic_loss=35078.8125 | value_loss=8362.2285 | v=1577.9478 | q=1475.9067 | 174.7 steps/s
+Step 920000 | actor_loss=0.0011 | critic_loss=43129.7344 | value_loss=10183.9473 | v=1605.8375 | q=1583.7297 | 175.2 steps/s
+Step 930000 | actor_loss=0.0014 | critic_loss=35551.8906 | value_loss=10122.0342 | v=1681.1470 | q=1671.7290 | 175.8 steps/s
+Step 940000 | actor_loss=0.0021 | critic_loss=71137.2031 | value_loss=7101.5508 | v=1694.3243 | q=1602.6393 | 176.4 steps/s
+Step 950000 | actor_loss=0.0006 | critic_loss=86008.7812 | value_loss=16511.6328 | v=1796.3607 | q=1688.8787 | 176.8 steps/s
+Step 960000 | actor_loss=0.0011 | critic_loss=34352.8086 | value_loss=23510.7598 | v=1744.1870 | q=1701.1982 | 177.1 steps/s
+Step 970000 | actor_loss=0.0006 | critic_loss=44571.3828 | value_loss=17174.3906 | v=2026.7866 | q=1966.0568 | 177.5 steps/s
+Step 980000 | actor_loss=0.0011 | critic_loss=52212.5156 | value_loss=10546.6113 | v=1665.9028 | q=1634.9290 | 177.8 steps/s
+Step 990000 | actor_loss=0.0013 | critic_loss=49744.9688 | value_loss=11483.1963 | v=1800.3409 | q=1755.0231 | 178.2 steps/s
+Saved final checkpoint to checkpoints/agent_final
+
+Training complete! Total time: 1.56 hours

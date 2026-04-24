@@ -1,0 +1,22 @@
+===============================
+884043.pbshpc
+csky003.hpc.iitd.ac.in
+===============================
+proxy login connected
+  [CKPT] 5 scenarios -> /home/mech/btech/me1222006/scratch/data/try/abc_ckpt5.npz (1.0 MB)
+  [CKPT] 10 scenarios -> /home/mech/btech/me1222006/scratch/data/try/abc_ckpt10.npz (2.1 MB)
+
+============================================================
+Extraction complete!
+  Scenarios: 10 ok, 0 failed
+  Transitions: 900
+  Obs shape: (900, 302) (expected dim=302)
+  Act shape: (900, 2)
+  Act range: [-1.7684, 4.3214]
+  Act std per dim: [0.8832957  0.17722678]
+  Reward range: [-0.0272, 0.9978]
+  Reward mean: 0.3467
+  Episodes (dones): 10
+  Elapsed: 43s
+============================================================
+Saved -> /home/mech/btech/me1222006/scratch/data/try/abc.npz (2.1 MB)

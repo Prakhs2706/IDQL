@@ -9,9 +9,8 @@ Action: 2-D continuous [acceleration, steering] clipped to
         [-10, 8] m/s^2 and [-0.8, 0.8] rad.
 Obs:    flat 302-D vector from waymax_obs_utils.
 
-Route-based Waymax metrics (sdc_progression, sdc_off_route, sdc_wrongway) are
-omitted here because Scenario-to-state conversion sets sdc_paths=None; we run
-log_divergence, overlap, offroad, and kinematic_infeasibility only.
+Evaluation uses only WaymoOfflineRL-style KPIs (collision, off_road,
+goal_completed, success) via compute_worl_episode_kpis.
 """
 
 import sys
@@ -40,28 +39,6 @@ from scenario_to_waymax import scenario_generator
 MAX_ACCELERATION = 8.0
 MIN_ACCELERATION = -10.0
 MAX_STEERING_ANGLE = 0.8
-
-# Waymax built-ins that do not require SimulatorState.sdc_paths
-WAYMAX_METRICS_TO_RUN = (
-    'log_divergence',
-    'overlap',
-    'offroad',
-    'kinematic_infeasibility',
-)
-
-
-def _metric_result_to_float(mr, sdc_idx: int) -> float:
-    """Reduce a MetricResult to a scalar for the SDC (or global scalar)."""
-    val = jnp.asarray(mr.value)
-    valid = jnp.asarray(mr.valid)
-    if val.ndim == 0:
-        out = jnp.where(valid, val, jnp.nan)
-        return float(jax.device_get(out))
-    n = int(val.shape[0])
-    if sdc_idx < 0 or sdc_idx >= n:
-        return float('nan')
-    out = jnp.where(valid[sdc_idx], val[sdc_idx], jnp.nan)
-    return float(jax.device_get(out))
 
 
 class WaymaxGymWrapper(gym.Env):
@@ -126,7 +103,7 @@ class WaymaxGymWrapper(gym.Env):
         env_config = wmx_config.EnvironmentConfig(
             max_num_objects=raw_state.num_objects,
             controlled_object=wmx_config.ObjectType.SDC,
-            metrics=wmx_config.MetricsConfig(metrics_to_run=WAYMAX_METRICS_TO_RUN),
+            metrics=wmx_config.MetricsConfig(),
             rewards=wmx_config.LinearCombinationRewardConfig(rewards={}),
         )
         self._env = BaseEnvironment(
@@ -148,16 +125,48 @@ class WaymaxGymWrapper(gym.Env):
         )
         return obs.astype(np.float32)
 
+    def snapshot_scenario(self):
+        """Save the current scenario so it can be replayed with reset_to_snapshot."""
+        return (self._scenario_id, self._state, self._map_data, self._tl_lookup)
+
+    def reset_to_snapshot(self, snapshot):
+        """Reset to a previously saved scenario (does not advance the generator)."""
+        sid, raw_state, map_data, tl_lookup = snapshot
+        self._map_data = map_data
+        self._tl_lookup = tl_lookup
+        self._scenario_id = sid
+
+        env_config = wmx_config.EnvironmentConfig(
+            max_num_objects=raw_state.num_objects,
+            controlled_object=wmx_config.ObjectType.SDC,
+            metrics=wmx_config.MetricsConfig(),
+            rewards=wmx_config.LinearCombinationRewardConfig(rewards={}),
+        )
+        self._env = BaseEnvironment(
+            dynamics_model=self._dynamics_model,
+            config=env_config,
+        )
+        self._state = self._env.reset(raw_state)
+        self._jit_step = jax.jit(self._env.step)
+        self._step_count = 0
+
+        ts = int(np.asarray(self._state.timestep))
+        obs = flatten_state_dict(
+            state_to_feature_dict(
+                self._state, ts, self._map_data, self._tl_lookup,
+                use_sim_trajectory=True,
+            )
+        )
+        return obs.astype(np.float32)
+
     def collect_episode_eval_stats(self) -> dict:
-        """Call at end of an episode on the terminal SimulatorState (before reset)."""
+        """Call at end of an episode on the terminal SimulatorState (before reset).
+
+        Returns only the WaymoOfflineRL KPIs: collision, off_road,
+        goal_completed, success.
+        """
         sdc_idx = int(jnp.argmax(self._state.object_metadata.is_sdc))
-        stats = {}
-        if self._env is not None:
-            raw_metrics = self._env.metrics(self._state)
-            for name, mr in raw_metrics.items():
-                stats[f'waymax_{name}'] = _metric_result_to_float(mr, sdc_idx)
-        stats.update(compute_worl_episode_kpis(self._state, sdc_idx))
-        return stats
+        return compute_worl_episode_kpis(self._state, sdc_idx)
 
     def step(self, action):
         action = np.asarray(action, dtype=np.float32).reshape(2)

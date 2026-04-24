@@ -1,0 +1,23 @@
+===============================
+885944.pbshpc
+aice005.hpc.iitd.ac.in
+===============================
+Already logged in
+Enjoy!
+JAX default_backend=gpu | devices=[CudaDevice(id=0)]
+Loading dataset from /home/mech/btech/me1222006/scratch/data/waymax_expert_50k/waymo_train_50k_ckpt40000.npz
+Loaded dataset: 3600000 transitions
+  obs shape:  (3600000, 302)
+  act shape:  (3600000, 2)
+  act range:  [-1.0000, 1.0000]
+  reward range: [-1.0000, 1.0000]
+Train: 3600000 transitions (no held-out transition split; Waymax eval is separate if configured).
+Creating eval env from /home/mech/btech/me1222006/scratch/data/raw/validation
+Eval env: obs=Box(-inf, inf, (302,), float32), act=Box([-10.   -0.8], [8.  0.8], (2,), float32)
+Creating DDPMIQLLearner (seed=2)
+  obs_space: Box(-inf, inf, (302,), float32)
+  act_space: Box([-10.   -0.8], [8.  0.8], (2,), float32)
+  config: {'actor_lr': 0.0003, 'critic_lr': 0.0003, 'value_lr': 0.0003, 'T': 5, 'N': 64, 'M': 0, 'actor_dropout_rate': 0.1, 'actor_num_blocks': 3, 'decay_steps': 1500000, 'actor_layer_norm': True, 'value_layer_norm': True, 'actor_tau': 0.001, 'beta_schedule': 'vp', 'critic_hyperparam': 0.9}
+Warmup: compiling Waymax env.step + metrics + eval policy (not counted in eval) ...
+  Warmup done in 109.6s
+  GIF scenario pinned: 368ae7945c8202ec (seed=2)

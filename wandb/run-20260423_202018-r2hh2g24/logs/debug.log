@@ -1,0 +1,135 @@
+2026-04-23 20:20:18,056 INFO    MainThread:18094 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2026-04-23 20:20:18,057 INFO    MainThread:18094 [wandb_setup.py:_flush():80] Configure stats pid to 18094
+2026-04-23 20:20:18,057 INFO    MainThread:18094 [wandb_setup.py:_flush():80] Loading settings from /home/mech/btech/me1222006/.config/wandb/settings
+2026-04-23 20:20:18,057 INFO    MainThread:18094 [wandb_setup.py:_flush():80] Loading settings from /scratch/mech/btech/me1222006/projects/IDQL/wandb/settings
+2026-04-23 20:20:18,057 INFO    MainThread:18094 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2026-04-23 20:20:18,057 INFO    MainThread:18094 [wandb_init.py:setup_run_log_directory():713] Logging user logs to /scratch/mech/btech/me1222006/projects/IDQL/wandb/run-20260423_202018-r2hh2g24/logs/debug.log
+2026-04-23 20:20:18,057 INFO    MainThread:18094 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to /scratch/mech/btech/me1222006/projects/IDQL/wandb/run-20260423_202018-r2hh2g24/logs/debug-internal.log
+2026-04-23 20:20:18,057 INFO    MainThread:18094 [wandb_init.py:init():840] calling init triggers
+2026-04-23 20:20:18,058 INFO    MainThread:18094 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'_wandb': {}}
+2026-04-23 20:20:18,058 INFO    MainThread:18094 [wandb_init.py:init():888] starting backend
+2026-04-23 20:20:18,376 INFO    MainThread:18094 [wandb_init.py:init():891] sending inform_init request
+2026-04-23 20:20:18,387 INFO    MainThread:18094 [wandb_init.py:init():899] backend started and connected
+2026-04-23 20:20:18,392 INFO    MainThread:18094 [wandb_init.py:init():969] updated telemetry
+2026-04-23 20:20:18,394 INFO    MainThread:18094 [wandb_init.py:init():993] communicating run to backend with 300.0 second timeout
+2026-04-23 20:20:39,448 INFO    Thread-3 (wrapped_target):18094 [retry.py:__call__():164] [no run ID] Retry attempt failed:
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/util/connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/socket.py", line 967, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -2] Name or service not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connectionpool.py", line 773, in urlopen
+    self._prepare_proxy(conn)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connectionpool.py", line 1042, in _prepare_proxy
+    conn.connect()
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='proxy22.iitd.ac.in', port=3128): Failed to resolve 'proxy22.iitd.ac.in' ([Errno -2] Name or service not known)
+
+The above exception was the direct cause of the following exception:
+
+urllib3.exceptions.ProxyError: ('Unable to connect to proxy', NameResolutionError("HTTPSConnection(host='proxy22.iitd.ac.in', port=3128): Failed to resolve 'proxy22.iitd.ac.in' ([Errno -2] Name or service not known)"))
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/requests/adapters.py", line 645, in send
+    resp = conn.urlopen(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/util/retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by ProxyError('Unable to connect to proxy', NameResolutionError("HTTPSConnection(host='proxy22.iitd.ac.in', port=3128): Failed to resolve 'proxy22.iitd.ac.in' ([Errno -2] Name or service not known)")))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 157, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 391, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/gql_request.py", line 70, in execute
+    request = self.session.post(self.url, **post_args)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/requests/sessions.py", line 640, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/requests/sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/requests/sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/requests/adapters.py", line 672, in send
+    raise ProxyError(e, request=request)
+requests.exceptions.ProxyError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by ProxyError('Unable to connect to proxy', NameResolutionError("HTTPSConnection(host='proxy22.iitd.ac.in', port=3128): Failed to resolve 'proxy22.iitd.ac.in' ([Errno -2] Name or service not known)")))
+2026-04-23 20:20:39,448 INFO    Thread-2 (wrapped_target):18094 [retry.py:__call__():164] [no run ID] Retry attempt failed:
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/util/connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/socket.py", line 967, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -2] Name or service not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connectionpool.py", line 773, in urlopen
+    self._prepare_proxy(conn)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connectionpool.py", line 1042, in _prepare_proxy
+    conn.connect()
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='proxy22.iitd.ac.in', port=3128): Failed to resolve 'proxy22.iitd.ac.in' ([Errno -2] Name or service not known)
+
+The above exception was the direct cause of the following exception:
+
+urllib3.exceptions.ProxyError: ('Unable to connect to proxy', NameResolutionError("HTTPSConnection(host='proxy22.iitd.ac.in', port=3128): Failed to resolve 'proxy22.iitd.ac.in' ([Errno -2] Name or service not known)"))
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/requests/adapters.py", line 645, in send
+    resp = conn.urlopen(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/urllib3/util/retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by ProxyError('Unable to connect to proxy', NameResolutionError("HTTPSConnection(host='proxy22.iitd.ac.in', port=3128): Failed to resolve 'proxy22.iitd.ac.in' ([Errno -2] Name or service not known)")))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 157, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 391, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/wandb/sdk/lib/gql_request.py", line 70, in execute
+    request = self.session.post(self.url, **post_args)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/requests/sessions.py", line 640, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/requests/sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/requests/sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/mech/btech/me1222006/anaconda3/envs/waymax/lib/python3.10/site-packages/requests/adapters.py", line 672, in send
+    raise ProxyError(e, request=request)
+requests.exceptions.ProxyError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by ProxyError('Unable to connect to proxy', NameResolutionError("HTTPSConnection(host='proxy22.iitd.ac.in', port=3128): Failed to resolve 'proxy22.iitd.ac.in' ([Errno -2] Name or service not known)")))

@@ -1,0 +1,30 @@
+
+Starting training for 1000000 steps ...
+ 10%|▉         | 99995/1000000 [11:40<50:00, 2/home/mech/btech/me1222006/scratch/projects/IDQL/jaxrl5/wrappers/../../launcher/examples/scenario_to_waymax.py:242: UserWarning: Explicitly requested dtype <class 'jax.numpy.int64'> requested in array is not available, and will be truncated to dtype int32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+Step 0 | actor_loss=230.4717 | critic_loss=113.3788 | value_loss=18.4308 | v=0.5265 | q=-5.4335 | 0.0 steps/s
+Step 10000 | actor_loss=0.1335 | critic_loss=1.5384 | value_loss=0.1696 | v=22.6734 | q=22.7751 | 24.8 steps/s
+Step 20000 | actor_loss=0.0309 | critic_loss=2.1971 | value_loss=0.2113 | v=31.2066 | q=30.2295 | 45.8 steps/s
+Step 30000 | actor_loss=0.0176 | critic_loss=1.8173 | value_loss=0.2051 | v=29.1737 | q=29.4654 | 63.9 steps/s
+Step 40000 | actor_loss=0.0209 | critic_loss=0.7276 | value_loss=0.1353 | v=28.4785 | q=28.0527 | 79.6 steps/s
+Step 50000 | actor_loss=0.0168 | critic_loss=0.6697 | value_loss=0.1119 | v=26.9959 | q=26.3726 | 93.3 steps/s
+Step 60000 | actor_loss=0.0090 | critic_loss=0.6571 | value_loss=0.0768 | v=26.5236 | q=26.4268 | 105.5 steps/s
+Step 70000 | actor_loss=0.0074 | critic_loss=0.4480 | value_loss=0.0535 | v=24.4004 | q=24.3628 | 116.3 steps/s
+Step 80000 | actor_loss=0.0090 | critic_loss=0.2920 | value_loss=0.0319 | v=24.2470 | q=24.1485 | 126.0 steps/s
+Step 90000 | actor_loss=0.0033 | critic_loss=0.2739 | value_loss=0.0296 | v=22.7338 | q=22.4498 | 134.8 steps/s
+Step 100000 | actor_loss=0.0067 | critic_loss=0.5044 | value_loss=0.0343 | v=22.9417 | q=22.7206 | 142.7 steps/s
+  timestamp_micros=jnp.array(ts_micros_2d, dtype=jnp.int64),
+ 20%|█▉        | 199994/1000000 [4:30:42<46:24, 287.33it/s]     
+Eval:  16%|█▌        | 160/1000 [44:14<3:26:31, 14.75s/it]  
+  Eval (N=64): return=-26.395±34.039 | ep_len=80.0 | success_rate=7.00% collision_rate=35.50% off_road_rate=92.60% goal_completion_rate=50.40% | wall=15133.8s
+  Eval GIF saved: /home/mech/btech/me1222006/scratch/projects/IDQL/launcher/examples/gifs/eval_step_100000.gif
+  Saved checkpoint to checkpoints/agent_step_100000
+Step 110000 | actor_loss=0.0025 | critic_loss=0.2578 | value_loss=0.0271 | v=22.9227 | q=22.7715 | 6.9 steps/s
+Step 120000 | actor_loss=0.0089 | critic_loss=0.6410 | value_loss=0.0501 | v=24.9430 | q=24.9279 | 7.5 steps/s
+Step 130000 | actor_loss=0.0093 | critic_loss=0.6263 | value_loss=0.0801 | v=25.2671 | q=24.9192 | 8.1 steps/s
+Step 140000 | actor_loss=0.0027 | critic_loss=1.3725 | value_loss=0.1508 | v=25.6232 | q=25.3395 | 8.7 steps/s
+Step 150000 | actor_loss=0.0024 | critic_loss=1.1559 | value_loss=0.1249 | v=26.0101 | q=25.6979 | 9.3 steps/s
+Step 160000 | actor_loss=0.0022 | critic_loss=5.6695 | value_loss=0.5590 | v=28.3833 | q=27.9265 | 9.9 steps/s
+Step 170000 | actor_loss=0.0024 | critic_loss=1.8824 | value_loss=0.2290 | v=28.5109 | q=27.7950 | 10.5 steps/s
+Step 180000 | actor_loss=0.0027 | critic_loss=3.7169 | value_loss=0.5743 | v=32.4881 | q=31.9534 | 11.1 steps/s
+Step 190000 | actor_loss=0.0031 | critic_loss=1.6395 | value_loss=0.2801 | v=31.0493 | q=30.5671 | 11.7 steps/s
+Step 200000 | actor_loss=0.0039 | critic_loss=2.0342 | value_loss=0.2610 | v=30.2977 | q=30.0338 | 12.3 steps/s

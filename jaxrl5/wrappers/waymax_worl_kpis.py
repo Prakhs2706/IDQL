@@ -35,7 +35,10 @@ def check_collision(state: datatypes.SimulatorState, sdc_index: int) -> bool:
 def check_off_road(state: datatypes.SimulatorState, sdc_index: int) -> bool:
     sdc_positions = state.sim_trajectory.xy[sdc_index]
     rg_points = state.roadgraph_points
-    ROAD_EDGE_TYPES = jnp.array([15, 16])
+    # WOMD / Waymax: 14=ROAD_EDGE_UNKNOWN, 15=BOUNDARY, 16=MEDIAN. Our
+    # scenario_to_waymax.py tags parsed road edges as 14 only, so include 14
+    # or this check always returns False (GIF can look off-road while KPI is 0%).
+    ROAD_EDGE_TYPES = jnp.array([14, 15, 16])
     edge_mask = jnp.isin(rg_points.types, ROAD_EDGE_TYPES)
     if not bool(edge_mask.any()):
         return False
